@@ -404,6 +404,12 @@ Build the top-level runner script:
 
 This is the longest phase. It alternates between autonomous batches and supervised check-in sessions.
 
+### 4.0 Pre-Calibration Setup
+
+Before the first autonomous batch:
+- **Varied round-robin set generation mode:** Generate sets with intentionally different mask rates per sample (e.g., 2 at 3x, 2 at 4x, 2 at 6x) to produce more natural-sounding variation within a round-robin group.
+- **Retraining at 4x mask rates with early stopping:** Retrain with patience 5 epochs on dev loss to confirm epoch 2 best.pt is still optimal under the updated mask rate defaults.
+
 ### 4.1 First Autonomous Batch
 
 **Config focus:** Initial calibration of mask probability, temperature, and acceptance band.

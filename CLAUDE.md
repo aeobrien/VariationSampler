@@ -74,8 +74,8 @@ These are constants. Do not change unless switching codec.
 | Stride | 512 samples |
 | Latent frame rate | 86 Hz |
 | Token throughput | 774 tokens/sec |
-| Codegram shape (1s audio) | `int[9, 86]`, values 0–1023 |
-| Max audio length (V1) | 1.0 second |
+| Codegram shape (2.5s audio) | `int[9, 215]`, values 0–1023 |
+| Max audio length (V1) | 2.5 seconds |
 
 ---
 
