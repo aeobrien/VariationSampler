@@ -6,7 +6,7 @@ import pytest
 from src.utils.audio import SAMPLE_RATE
 from src.postprocess.chain import (
     remove_dc,
-    match_level,
+    match_peak,
     fade_tail,
     dither_to_16bit,
     postprocess,
@@ -47,24 +47,33 @@ class TestRemoveDC:
         np.testing.assert_array_almost_equal(result, audio, decimal=6)
 
 
-class TestMatchLevel:
+class TestMatchPeak:
 
-    def test_preserves_reference_rms(self, short_audio, rng):
-        """Level-matched audio should have similar RMS to reference in window."""
+    def test_preserves_reference_peak(self, short_audio):
+        """Peak-matched audio should have same peak amplitude as reference."""
         reference = short_audio
         audio = short_audio * 0.5  # Quieter
-        result = match_level(audio, reference, window_ms=50)
+        result = match_peak(audio, reference)
 
-        window_samples = int(0.05 * SAMPLE_RATE)
-        rms_ref = np.sqrt(np.mean(reference[:window_samples] ** 2))
-        rms_result = np.sqrt(np.mean(result[:window_samples] ** 2))
-        assert rms_result == pytest.approx(rms_ref, rel=0.01)
+        peak_ref = np.max(np.abs(reference))
+        peak_result = np.max(np.abs(result))
+        assert peak_result == pytest.approx(peak_ref, rel=0.01)
+
+    def test_preserves_waveform_shape(self, short_audio):
+        """Peak matching should scale uniformly, preserving attack-to-body ratio."""
+        reference = short_audio
+        audio = short_audio * 0.5
+        result = match_peak(audio, reference)
+
+        # The ratio between any two samples should be preserved
+        gain = np.max(np.abs(reference)) / np.max(np.abs(audio))
+        np.testing.assert_array_almost_equal(result, audio * gain, decimal=5)
 
     def test_silent_audio_unchanged(self):
         """Silent audio should be returned unchanged."""
         silent = np.zeros(4410, dtype=np.float32)
         reference = np.ones(4410, dtype=np.float32) * 0.5
-        result = match_level(silent, reference)
+        result = match_peak(silent, reference)
         np.testing.assert_array_equal(result, silent)
 
 
@@ -112,7 +121,7 @@ class TestPostprocess:
 
     def test_full_chain_valid_audio(self, short_audio):
         """Full chain should produce valid float32 audio."""
-        config = {"window_ms": 50, "fade_ms": 10}
+        config = {"fade_ms": 10}
         result = postprocess(short_audio, short_audio, config)
         assert result.dtype == np.float32
         assert len(result) == len(short_audio)
@@ -122,7 +131,7 @@ class TestPostprocess:
         rng = np.random.default_rng(42)
         audio = rng.normal(0.5, 0.2, 4410).astype(np.float32)
         reference = rng.normal(0, 0.3, 4410).astype(np.float32)
-        config = {"window_ms": 50, "fade_ms": 10}
+        config = {"fade_ms": 10}
         result = postprocess(audio, reference, config)
         # After DC removal and level match, mean should be near zero
         # (not exactly zero due to level matching)
@@ -130,6 +139,6 @@ class TestPostprocess:
 
     def test_chain_applies_fade(self, short_audio):
         """Full chain should apply fade at tail."""
-        config = {"window_ms": 50, "fade_ms": 10}
+        config = {"fade_ms": 10}
         result = postprocess(short_audio, short_audio, config)
         assert abs(result[-1]) < 1e-6

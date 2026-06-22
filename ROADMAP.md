@@ -501,6 +501,11 @@ If cross-library or OOD performance degrades:
 - Options: add more diverse training data, add library/style conditioning, adjust normalisation
 - Run targeted autonomous batches if hyperparameter tuning might help
 
+**Three approaches to explore (in order of simplicity):**
+1. **Model-inferred variation:** Test whether the model naturally scales variation magnitude to match the instrument's spectral complexity. If kicks and hats already produce family-appropriate variation without per-family tuning, a single universal config may suffice.
+2. **Source-adaptive thresholds:** Derive acceptance thresholds from source sample properties (e.g., spectral complexity, transient sharpness). This avoids needing family labels at inference time.
+3. **Single universal threshold:** If neither adaptive approach is needed, use one acceptance band for all instruments. This is the simplest operationally and should be the default unless evidence shows it fails.
+
 ### 5.4 — GATE C: Cross-Library Generalisation
 
 **Gate criteria:** The model produces convincing variations on held-out libraries and does not destroy OOD inputs.

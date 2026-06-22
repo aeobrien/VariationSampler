@@ -324,6 +324,15 @@ def train(args: argparse.Namespace) -> None:
     global_step = start_epoch * steps_per_epoch
 
     best_dev_loss = float("inf")
+    early_stopping_patience = tc.get("early_stopping_patience")
+    patience_counter = 0
+
+    # On resume, run a dev eval to restore best_dev_loss so early stopping works
+    if args.resume and start_epoch > 0:
+        logger.info("Running dev eval to establish baseline for early stopping...")
+        baseline_metrics = evaluate(model, dev_loader, config)
+        best_dev_loss = baseline_metrics.get("total_loss", float("inf"))
+        logger.info("Resumed best_dev_loss: %.4f", best_dev_loss)
 
     for epoch in range(start_epoch, tc["max_epochs"]):
         epoch_start = time.time()
@@ -413,6 +422,22 @@ def train(args: argparse.Namespace) -> None:
                 best_path = CHECKPOINT_DIR / "best.pt"
                 save_checkpoint(model, optimizer, epoch, best_path)
                 logger.info("New best dev loss: %.4f", dev_loss)
+                patience_counter = 0
+            elif early_stopping_patience is not None:
+                patience_counter += 1
+                logger.info(
+                    "No dev improvement (%d/%d patience)",
+                    patience_counter, early_stopping_patience,
+                )
+                if patience_counter >= early_stopping_patience:
+                    logger.info(
+                        "Early stopping at epoch %d (no improvement for %d evals)",
+                        epoch, early_stopping_patience,
+                    )
+                    if wandb_run:
+                        import wandb
+                        wandb.log({"early_stopped_epoch": epoch}, step=global_step)
+                    break
 
         # Periodic checkpoint
         if (epoch + 1) % checkpoint_every == 0:

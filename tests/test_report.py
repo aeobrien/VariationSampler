@@ -60,7 +60,7 @@ class TestGenerateIterationReport:
         )
         required_keys = {
             "iteration_id", "timestamp", "config", "metrics",
-            "baseline_comparison", "acceptance_rate", "trends",
+            "baseline_comparison", "per_family", "acceptance_rate", "trends",
             "best_samples", "worst_samples", "audio_paths", "n_samples",
         }
         assert required_keys.issubset(report.keys())
@@ -158,6 +158,62 @@ class TestGenerateIterationReport:
         for s in report["best_samples"]:
             assert "name" in s
             assert "score" in s
+
+
+    def test_per_family_summary(self, sample_config):
+        """Should include per-family breakdown when baselines and families provided."""
+        eval_metrics = {
+            "mrstft": [0.3, 0.4, 0.2, 0.5],
+            "mfcc": [3.0, 4.0, 2.0, 5.0],
+        }
+        audio_paths = {
+            "Track1_Snare_v127": {"source": "s.wav", "variations": []},
+            "Track2_Snare_v100": {"source": "s.wav", "variations": []},
+            "Track1_Kick_v127": {"source": "s.wav", "variations": []},
+            "Track2_Kick_v100": {"source": "s.wav", "variations": []},
+        }
+        sample_families = {
+            "Track1_Snare_v127": "Snare",
+            "Track2_Snare_v100": "Snare",
+            "Track1_Kick_v127": "Kick",
+            "Track2_Kick_v100": "Kick",
+        }
+        family_baselines = {
+            "Snare": {
+                "mrstft": MetricDistribution(
+                    metric_name="mrstft", values=[0.2, 0.3, 0.4, 0.5],
+                ),
+            },
+            "Kick": {
+                "mrstft": MetricDistribution(
+                    metric_name="mrstft", values=[0.1, 0.2, 0.3],
+                ),
+            },
+        }
+        report = generate_iteration_report(
+            iteration_id=0,
+            config=sample_config,
+            eval_metrics=eval_metrics,
+            audio_paths=audio_paths,
+            family_baselines=family_baselines,
+            sample_families=sample_families,
+        )
+        assert "per_family" in report
+        assert "Snare" in report["per_family"]
+        assert "Kick" in report["per_family"]
+        assert report["per_family"]["Snare"]["n_samples"] == 2
+        assert report["per_family"]["Kick"]["n_samples"] == 2
+        assert "mrstft" in report["per_family"]["Snare"]["baseline_comparison"]
+
+    def test_per_family_empty_without_baselines(self, sample_config, sample_eval_metrics, sample_audio_paths):
+        """Per-family should be empty dict when no baselines provided."""
+        report = generate_iteration_report(
+            iteration_id=0,
+            config=sample_config,
+            eval_metrics=sample_eval_metrics,
+            audio_paths=sample_audio_paths,
+        )
+        assert report["per_family"] == {}
 
 
 class TestSaveIterationReport:

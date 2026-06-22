@@ -72,6 +72,60 @@ def _composite_score(metrics: dict[str, float]) -> float:
     )
 
 
+def _build_per_family_summary(
+    eval_metrics: dict[str, list[float]],
+    audio_paths: dict[str, dict[str, Any]],
+    sample_families: dict[str, str],
+    family_baselines: dict[str, dict[str, MetricDistribution]],
+) -> dict[str, dict[str, Any]]:
+    """Build per-family metric summaries with baseline comparison.
+
+    Phase 4 diagnostic — see ROADMAP Phase 5.3 for long-term approach.
+
+    Returns:
+        Dict of family_name -> {"metrics": {metric: summary}, "baseline_comparison": {...}}.
+    """
+    from collections import defaultdict
+
+    # Map sample index to family
+    sample_names = list(audio_paths.keys())
+    family_indices: dict[str, list[int]] = defaultdict(list)
+    for idx, name in enumerate(sample_names):
+        family = sample_families.get(name, "Unknown")
+        family_indices[family].append(idx)
+
+    result: dict[str, dict[str, Any]] = {}
+    for family, indices in sorted(family_indices.items()):
+        family_metrics: dict[str, dict] = {}
+        family_baseline_cmp: dict[str, dict] = {}
+
+        for metric_name, values in eval_metrics.items():
+            family_vals = [values[i] for i in indices if i < len(values)]
+            if not family_vals:
+                continue
+            family_metrics[metric_name] = _summarise_metric(family_vals)
+
+            # Compare against family-specific baseline
+            if family in family_baselines and metric_name in family_baselines[family]:
+                dist = family_baselines[family][metric_name]
+                mean_val = float(np.mean(family_vals))
+                family_baseline_cmp[metric_name] = {
+                    "value": mean_val,
+                    "baseline_median": dist.median,
+                    "baseline_q25": dist.q25,
+                    "baseline_q75": dist.q75,
+                    "in_band": is_in_band(mean_val, dist),
+                }
+
+        result[family] = {
+            "n_samples": len(indices),
+            "metrics": family_metrics,
+            "baseline_comparison": family_baseline_cmp,
+        }
+
+    return result
+
+
 def generate_iteration_report(
     iteration_id: int,
     config: dict[str, Any],
@@ -79,6 +133,8 @@ def generate_iteration_report(
     audio_paths: dict[str, dict[str, Any]],
     baseline_dists: dict[str, MetricDistribution] | None = None,
     previous_report: dict[str, Any] | None = None,
+    family_baselines: dict[str, dict[str, MetricDistribution]] | None = None,
+    sample_families: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Generate a structured iteration report.
 
@@ -90,6 +146,8 @@ def generate_iteration_report(
         baseline_dists: Optional dict of metric_name -> MetricDistribution for
             ground-truth comparison.
         previous_report: Previous iteration's report dict for trend computation.
+        family_baselines: Optional per-family baseline distributions.
+        sample_families: Optional mapping of sample name -> family name.
 
     Returns:
         Structured report dict.
@@ -152,12 +210,20 @@ def generate_iteration_report(
     best_samples = [{"name": name, "score": score} for name, score in sample_scores[:3]]
     worst_samples = [{"name": name, "score": score} for name, score in sample_scores[-3:]]
 
+    # Per-family breakdown (Phase 4 diagnostic)
+    per_family_summary: dict[str, dict[str, Any]] = {}
+    if family_baselines and sample_families and audio_paths:
+        per_family_summary = _build_per_family_summary(
+            eval_metrics, audio_paths, sample_families, family_baselines,
+        )
+
     report = {
         "iteration_id": iteration_id,
         "timestamp": timestamp,
         "config": config,
         "metrics": metric_summaries,
         "baseline_comparison": baseline_comparison,
+        "per_family": per_family_summary,
         "acceptance_rate": acceptance_rate,
         "trends": trends,
         "best_samples": best_samples,

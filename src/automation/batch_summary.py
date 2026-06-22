@@ -161,6 +161,9 @@ def generate_batch_summary(
         if path.exists():
             listening_notes = path.read_text()
 
+    # Per-family data from final iteration
+    per_family = final_report.get("per_family", {})
+
     summary = {
         "batch_id": batch_id,
         "start_time": start_time,
@@ -170,6 +173,7 @@ def generate_batch_summary(
         "git_commit": _get_git_commit(),
         "config_trajectory": config_trajectory,
         "metric_trajectory": metric_trajectory,
+        "per_family": per_family,
         "best_samples": best_5,
         "worst_samples": worst_5,
         "claude_diagnoses": claude_diagnoses,
@@ -234,11 +238,34 @@ def format_markdown_summary(summary: dict[str, Any]) -> str:
         "",
     ]
 
-    # Config trajectory
-    lines.append("## Config Trajectory")
+    # Starting vs final config comparison
+    starting = summary.get("starting_config", {})
+    final = summary.get("final_config", {})
+    config_changes = _compute_config_diff(starting, final)
+    lines.append("## Config: Start vs End")
     lines.append("")
+    if config_changes:
+        lines.append("| Parameter | Start | End |")
+        lines.append("|-----------|-------|-----|")
+        for change in config_changes:
+            lines.append(f"| `{change['key']}` | {change['old']} | {change['new']} |")
+    else:
+        lines.append("No config changes (same config start to finish).")
+    lines.append("")
+
+    # Full starting config for reference
+    lines.append("**Starting config:**")
+    lines.append("")
+    for key, val in sorted(starting.items()):
+        lines.append(f"- `{key}`: {val}")
+    lines.append("")
+
+    # Config trajectory (iteration-by-iteration changes)
     config_traj = summary.get("config_trajectory", [])
-    if config_traj:
+    has_changes = any(entry.get("changes") for entry in config_traj)
+    if has_changes:
+        lines.append("## Config Trajectory (Per-Iteration)")
+        lines.append("")
         lines.append("| Iteration | Key | Old | New |")
         lines.append("|-----------|-----|-----|-----|")
         for entry in config_traj:
@@ -247,9 +274,6 @@ def format_markdown_summary(summary: dict[str, Any]) -> str:
                     f"| {entry['iteration']} | `{change['key']}` | "
                     f"{change['old']} | {change['new']} |"
                 )
-        lines.append("")
-    else:
-        lines.append("No config changes across iterations.")
         lines.append("")
 
     # Metric trajectory
@@ -268,7 +292,31 @@ def format_markdown_summary(summary: dict[str, Any]) -> str:
             lines.append(f"| {metric_name} | {data['trend']} | {values_str} |")
         lines.append("")
 
-    # Best/worst samples
+    # Per-family breakdown (from final iteration)
+    per_family = summary.get("per_family", {})
+    if per_family:
+        lines.append("## Per-Family Breakdown (Final Iteration)")
+        lines.append("")
+        lines.append("| Family | N | MR-STFT (mean) | MFCC (mean) | Acceptance | vs Baseline |")
+        lines.append("|--------|---|----------------|-------------|------------|-------------|")
+        for family_name, fdata in sorted(per_family.items()):
+            n = fdata.get("n_samples", 0)
+            mrstft = fdata.get("metrics", {}).get("mrstft", {}).get("mean", "N/A")
+            mfcc = fdata.get("metrics", {}).get("mfcc", {}).get("mean", "N/A")
+            acc = fdata.get("acceptance_rate", "N/A")
+            bl_comp = fdata.get("baseline_comparison", {})
+            bl_str = ""
+            for metric_name, bl in bl_comp.items():
+                in_band = bl.get("in_band", "N/A")
+                bl_median = bl.get("baseline_median", "N/A")
+                bl_str += f"{metric_name}: {'in-band' if in_band else 'OUT'} (bl median={bl_median:.3f}) " if isinstance(bl_median, (int, float)) else f"{metric_name}: {in_band} "
+            mrstft_str = f"{mrstft:.3f}" if isinstance(mrstft, (int, float)) else str(mrstft)
+            mfcc_str = f"{mfcc:.1f}" if isinstance(mfcc, (int, float)) else str(mfcc)
+            acc_str = f"{acc:.0%}" if isinstance(acc, (int, float)) else str(acc)
+            lines.append(f"| {family_name} | {n} | {mrstft_str} | {mfcc_str} | {acc_str} | {bl_str.strip()} |")
+        lines.append("")
+
+    # Best/worst samples with per-sample metrics
     lines.append("## Best Samples")
     lines.append("")
     for s in summary.get("best_samples", []):
@@ -292,12 +340,33 @@ def format_markdown_summary(summary: dict[str, Any]) -> str:
             lines.append(d["reasoning"])
             lines.append("")
 
-    # Listening notes
+    # Listening notes (pre-filled or template)
+    lines.append("## Listening Notes")
+    lines.append("")
     if summary.get("listening_notes"):
-        lines.append("## Listening Notes")
-        lines.append("")
         lines.append(summary["listening_notes"])
+    else:
+        lines.append("_To be filled in after auditioning the listening pack._")
         lines.append("")
+        lines.append("### Machine Gun Test")
+        lines.append("")
+        lines.append("Compare `machinegun_source.wav` (same hit repeated) vs `machinegun_variations.wav` (ML variations):")
+        lines.append("")
+        lines.append("| Sample | Source MG | Variations MG | Notes |")
+        lines.append("|--------|----------|---------------|-------|")
+        for s in summary.get("best_samples", []):
+            lines.append(f"| {s['name']} | | | |")
+        for s in summary.get("worst_samples", []):
+            if s['name'] not in {bs['name'] for bs in summary.get("best_samples", [])}:
+                lines.append(f"| {s['name']} | | | |")
+        lines.append("")
+        lines.append("### Overall Impressions")
+        lines.append("")
+        lines.append("- Identity preservation: ")
+        lines.append("- Variation quality: ")
+        lines.append("- Problem families: ")
+        lines.append("- Recommended next step: ")
+    lines.append("")
 
     return "\n".join(lines)
 
@@ -323,6 +392,9 @@ def assemble_listening_pack(
     """
     output_dir = Path(output_dir)
     pack_dir = output_dir / f"listening-pack" / f"batch-{batch_id}"
+    # Clean up stale files from previous runs
+    if pack_dir.exists():
+        shutil.rmtree(pack_dir)
     pack_dir.mkdir(parents=True, exist_ok=True)
 
     # Collect all scored samples with their audio paths
@@ -361,27 +433,38 @@ def assemble_listening_pack(
             if var_path.exists():
                 shutil.copy2(var_path, sample_dir / f"var_{i + 1:02d}.wav")
 
-        # Render machine-gun comparison from variation files
-        var_audios = []
+        # Render machine-gun comparison from variation files (stereo-aware)
+        var_audios_raw = []
         for var_path in paths_info.get("variations", []):
             var_path = Path(var_path)
             if var_path.exists():
                 try:
                     from src.utils.audio import load_wav
-                    audio = load_wav(var_path)
-                    # Convert to mono
-                    if audio.shape[0] > 1:
-                        mono = np.mean(audio, axis=0)
-                    else:
-                        mono = audio[0]
-                    var_audios.append(mono)
+                    var_audios_raw.append(load_wav(var_path))  # [channels, samples]
                 except Exception as e:
                     logger.warning("Failed to load %s for machine-gun render: %s", var_path, e)
 
-        if len(var_audios) >= 2:
-            mg = render_machine_gun(var_audios)
-            mg_stereo = np.stack([mg, mg], axis=0)
-            save_wav(mg_stereo, sample_dir / "machinegun.wav")
+        if len(var_audios_raw) >= 2:
+            n_ch = var_audios_raw[0].shape[0]
+            mg_channels = []
+            for ch in range(n_ch):
+                hits = [a[ch] for a in var_audios_raw]
+                mg_channels.append(render_machine_gun(hits))
+            mg_out = np.stack(mg_channels, axis=0)
+            save_wav(mg_out, sample_dir / "machinegun_variations.wav")
+
+        # Render source-only machine gun (same hit repeated) for A/B comparison
+        if source_path.exists():
+            try:
+                from src.utils.audio import load_wav
+                source_audio = load_wav(source_path)
+                mg_src_channels = []
+                for ch in range(source_audio.shape[0]):
+                    mg_src_channels.append(render_machine_gun([source_audio[ch]]))
+                mg_src_out = np.stack(mg_src_channels, axis=0)
+                save_wav(mg_src_out, sample_dir / "machinegun_source.wav")
+            except Exception as e:
+                logger.warning("Failed to render source machine gun for %s: %s", name, e)
 
     logger.info("Assembled listening pack: %s (%d samples)", pack_dir, len(selected))
     return pack_dir

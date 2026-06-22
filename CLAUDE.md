@@ -223,6 +223,8 @@ These are settled for V1 based on two rounds of research:
 
 5. **Editable codebooks use a probabilistic gradient across 3–8.** Not a hard cutoff. Earlier codebooks get exponentially lower mask probability (e.g., codebook 3 at ~0.5%, codebook 8 at ~15%). The acceptance filter is the ultimate guardrail. Start conservatively and tune the gradient based on listening.
 
+6. **Train at 1x mask rates, generate at 4x mask rates.** The variation mechanism depends on inference-time mask rates exceeding training-time mask rates. The model's prediction uncertainty at unfamiliar mask positions is what produces variation. Retraining at higher mask rates eliminates this uncertainty and kills variation. Always train with `configs/train-1x.yaml` and generate with `configs/default.yaml` (4x rates). See the `checkpoints/README.md` for checkpoint naming.
+
 ---
 
 ## Mistakes to Avoid
@@ -237,3 +239,4 @@ These are settled for V1 based on two rounds of research:
 - **[Metrics] Always compare ML output to the procedural baseline.** The procedural baseline from Gate 0 is the quality floor. If ML can't beat it, ML isn't adding value.
 - **[Automation] Do not let Claude edit code in the automated loop.** Claude's role in the unattended loop is returning config JSON with reasoning only. Code changes happen in supervised sessions.
 - **[Automation] Do not build the automation loop before Gate A.** Manual iteration is faster for reaching first listenable outputs. Automation is a post-Gate A investment.
+- **[Training] Do not retrain the model at higher mask rates.** The 4x mask rate retrain (v2) eliminated prediction uncertainty, producing variations indistinguishable from the source. The variation mechanism requires the model to be uncertain at the inference-time mask positions. Train at 1x, infer at 4x. This was learned the hard way when epoch 27 of the 4x retrain produced zero perceptible variation.

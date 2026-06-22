@@ -21,36 +21,33 @@ def remove_dc(audio: np.ndarray) -> np.ndarray:
     return audio - np.mean(audio)
 
 
-def match_level(
+def match_peak(
     audio: np.ndarray,
     reference: np.ndarray,
-    window_ms: float = 50,
-    sr: int = SAMPLE_RATE,
 ) -> np.ndarray:
-    """Match RMS level of audio to reference over attack window.
+    """Match peak amplitude of audio to reference.
+
+    For percussive material, the transient peak defines perceived loudness.
+    RMS matching over-compensates when the attack is softer in the variation,
+    boosting the body/sustain disproportionately. Peak matching preserves the
+    attack-to-body ratio by aligning the loudest sample.
 
     Args:
         audio: 1D mono audio to adjust, float32.
         reference: 1D mono reference audio, float32.
-        window_ms: Window in ms over which to measure RMS.
-        sr: Sample rate.
 
     Returns:
-        Level-matched audio, same shape.
+        Peak-matched audio, same shape.
     """
-    window_samples = int(window_ms / 1000.0 * sr)
-    ref_segment = reference[:window_samples]
-    audio_segment = audio[:window_samples]
+    peak_ref = float(np.max(np.abs(reference)))
+    peak_audio = float(np.max(np.abs(audio)))
 
-    rms_ref = float(np.sqrt(np.mean(ref_segment ** 2)))
-    rms_audio = float(np.sqrt(np.mean(audio_segment ** 2)))
-
-    if rms_audio < 1e-10:
-        logger.warning("Audio RMS near zero; skipping level match")
+    if peak_audio < 1e-10:
+        logger.warning("Audio peak near zero; skipping peak match")
         return audio
 
-    gain = rms_ref / rms_audio
-    logger.debug("Level match gain: %.4f", gain)
+    gain = peak_ref / peak_audio
+    logger.debug("Peak match gain: %.4f", gain)
     return audio * gain
 
 
@@ -117,12 +114,11 @@ def postprocess(
     Returns:
         Post-processed float32 audio.
     """
-    window_ms = config.get("window_ms", 50)
     fade_ms = config.get("fade_ms", 10)
 
     result = remove_dc(audio)
-    result = match_level(result, reference, window_ms=window_ms)
+    result = match_peak(result, reference)
     result = fade_tail(result, fade_ms=fade_ms)
 
-    logger.info("Post-processing complete: %d samples", len(result))
+    logger.debug("Post-processing complete: %d samples", len(result))
     return result

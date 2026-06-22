@@ -115,23 +115,27 @@ upload_code() {
     "
 
     # Upload code, configs, scripts (small — use scp directly)
+    # Note: scp --recurse copies DIR contents INTO target, so we target the
+    # parent directory to avoid nesting (e.g. src/src/).
     gcloud compute scp --recurse --zone="$zone" --tunnel-through-iap --compress \
-        "$PROJECT_ROOT/src/" "$INSTANCE:$REMOTE_DIR/src/"
+        "$PROJECT_ROOT/src" "$INSTANCE:$REMOTE_DIR/"
     gcloud compute scp --recurse --zone="$zone" --tunnel-through-iap --compress \
-        "$PROJECT_ROOT/scripts/" "$INSTANCE:$REMOTE_DIR/scripts/"
+        "$PROJECT_ROOT/scripts" "$INSTANCE:$REMOTE_DIR/"
     gcloud compute scp --recurse --zone="$zone" --tunnel-through-iap --compress \
-        "$PROJECT_ROOT/configs/" "$INSTANCE:$REMOTE_DIR/configs/"
+        "$PROJECT_ROOT/configs" "$INSTANCE:$REMOTE_DIR/"
+    gcloud compute scp --recurse --zone="$zone" --tunnel-through-iap --compress \
+        "$PROJECT_ROOT/tools" "$INSTANCE:$REMOTE_DIR/"
     gcloud compute scp --zone="$zone" --tunnel-through-iap \
         "$PROJECT_ROOT/requirements.txt" "$INSTANCE:$REMOTE_DIR/"
 
     # Upload splits and baselines (small files, scp is fine)
     if [ -d "$PROJECT_ROOT/data/splits" ]; then
         gcloud compute scp --recurse --zone="$zone" --tunnel-through-iap --compress \
-            "$PROJECT_ROOT/data/splits/" "$INSTANCE:$REMOTE_DIR/data/splits/"
+            "$PROJECT_ROOT/data/splits" "$INSTANCE:$REMOTE_DIR/data/"
     fi
     if [ -d "$PROJECT_ROOT/data/baselines" ]; then
         gcloud compute scp --recurse --zone="$zone" --tunnel-through-iap --compress \
-            "$PROJECT_ROOT/data/baselines/" "$INSTANCE:$REMOTE_DIR/data/baselines/"
+            "$PROJECT_ROOT/data/baselines" "$INSTANCE:$REMOTE_DIR/data/"
     fi
 
     # Upload codegrams via tar (thousands of small .npy files — scp is too slow)

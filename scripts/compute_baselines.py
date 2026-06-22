@@ -19,30 +19,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.eval.baselines import compute_baseline_for_family, save_baseline
 from src.utils.audio import load_wav
+from src.utils.instrument_families import INSTRUMENT_FAMILIES, _DIR_PATTERN as DIR_PATTERN
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
-
-# Pattern: Track{N}_{Instrument}_v{velocity}
-DIR_PATTERN = re.compile(r"^Track(\d+)_(.+)_v(\d+)$")
-
-# Map instrument names to families
-INSTRUMENT_FAMILIES = {
-    "Snare": "Snare",
-    "SnareRim": "Snare",
-    "Kick": "Kick",
-    "HiHatClosed": "HiHat",
-    "HiHatOpen": "HiHat",
-    "PedalHat": "HiHat",
-    "Rimshot": "Rimshot",
-    "CrossStick": "CrossStick",
-    "Tom": "Tom",
-    "TomHi": "Tom",
-    "TomLo": "Tom",
-    "TomFloor": "Tom",
-    "Crash": "Cymbal",
-    "Ride": "Cymbal",
-}
 
 
 def discover_families(data_dir: Path) -> dict[str, dict[str, list[Path]]]:

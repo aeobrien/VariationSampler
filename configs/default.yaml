@@ -13,7 +13,7 @@ model:
 
 masking:
   # Per-codebook mask probability multipliers (probabilistic gradient)
-  # 4x multiplier from Gate A sweep — best perceptual balance
+  # 8x multiplier — best perceptual balance with epoch 10 checkpoint
   codebook_multipliers:
     3: 0.24
     4: 0.48
@@ -21,25 +21,25 @@ masking:
     6: 1.0
     7: 1.0
     8: 1.0
-  p_tail: 0.32
-  p_attack: 0.08
-  attack_frames: 2  # ~23ms at 86 Hz
+  p_tail: 0.64
+  p_attack: 0.04
+  attack_frames: 3  # ~35ms at 86 Hz — protects stick transient
 
 sampling:
-  temperature: 0.9
+  temperature: 2.0
   top_p: 0.95
   k_candidates: 8
 
 acceptance:
-  mrstft_band: [0.1, 0.8]   # [lower, upper] for MR-STFT distance
-  mfcc_band: [2.0, 15.0]    # [lower, upper] for MFCC distance
+  mrstft_band: [0.1, 1.5]   # [lower, upper] for MR-STFT distance (widened for 4x retrain)
+  mfcc_band: [2.0, 25.0]    # [lower, upper] for MFCC distance (widened for 4x retrain)
   min_token_change_rate: 0.01
   max_token_change_rate: 0.30
   max_retries: 5
   min_attack_smear: 0.85
-  min_transient_xcorr: 0.95
+  min_transient_xcorr: 0.80
   max_hf_energy_delta_db: 6.0
-  max_spectral_peak_divergence: 3
+  max_spectral_peak_divergence: 50
   attack_ms: 30
 
 training:
@@ -50,9 +50,10 @@ training:
   weight_decay: 0.01
   grad_clip: 1.0
   change_rate_penalty_lambda: 0.1
-  target_change_rate: 0.05
+  target_change_rate: 0.12
   checkpoint_every_epochs: 5
   eval_every_epochs: 1
+  early_stopping_patience: 5
 
 eval:
   machine_gun_bpm: 120.0

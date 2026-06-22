@@ -166,10 +166,11 @@ def call_claude(
     system_prompt: str,
     user_prompt: str,
     api_key: str | None = None,
-    model: str = "claude-sonnet-4-20250514",
+    model: str = "claude-opus-4-6",
     log_dir: str | Path | None = None,
+    thinking_budget: int = 10000,
 ) -> str:
-    """Call the Anthropic API with the given prompts.
+    """Call the Anthropic API with extended thinking enabled.
 
     Args:
         system_prompt: System prompt string.
@@ -177,6 +178,7 @@ def call_claude(
         api_key: Anthropic API key. If None, reads from ANTHROPIC_API_KEY env var.
         model: Model ID to use.
         log_dir: Optional directory to log prompts and responses.
+        thinking_budget: Token budget for extended thinking (0 to disable).
 
     Returns:
         Raw response text from Claude.
@@ -196,16 +198,41 @@ def call_claude(
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    logger.info("Calling Claude API (model=%s)...", model)
+    # Build API call kwargs
+    kwargs: dict[str, Any] = {
+        "model": model,
+        "messages": [{"role": "user", "content": user_prompt}],
+    }
 
-    response = client.messages.create(
-        model=model,
-        max_tokens=2048,
-        system=system_prompt,
-        messages=[{"role": "user", "content": user_prompt}],
-    )
+    if thinking_budget > 0:
+        logger.info(
+            "Calling Claude API (model=%s, thinking_budget=%d)...",
+            model, thinking_budget,
+        )
+        kwargs["max_tokens"] = thinking_budget + 4096
+        kwargs["thinking"] = {"type": "enabled", "budget_tokens": thinking_budget}
+        # Extended thinking requires temperature=1 and doesn't support
+        # system as a top-level string — pass it in the system parameter
+        kwargs["temperature"] = 1
+        kwargs["system"] = system_prompt
+    else:
+        logger.info("Calling Claude API (model=%s, no thinking)...", model)
+        kwargs["max_tokens"] = 2048
+        kwargs["system"] = system_prompt
 
-    response_text = response.content[0].text
+    response = client.messages.create(**kwargs)
+
+    # Extract text from response (may contain thinking + text blocks)
+    response_text = ""
+    thinking_text = ""
+    for block in response.content:
+        if block.type == "thinking":
+            thinking_text = block.thinking
+        elif block.type == "text":
+            response_text = block.text
+
+    if not response_text:
+        raise RuntimeError("No text block in Claude response")
 
     # Log prompt and response
     if log_dir:
@@ -216,8 +243,10 @@ def call_claude(
         log_data = {
             "timestamp": timestamp,
             "model": model,
+            "thinking_budget": thinking_budget,
             "system_prompt": system_prompt,
             "user_prompt": user_prompt,
+            "thinking": thinking_text,
             "response": response_text,
         }
         with open(log_path, "w") as f:

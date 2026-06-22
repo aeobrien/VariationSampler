@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from src.automation.runner import AutomationRunner
+from src.eval.baselines import MetricDistribution, save_baseline
 
 
 @pytest.fixture
@@ -13,6 +14,7 @@ def batch_config(tmp_path):
     """Create a minimal batch config file for testing."""
     config = {
         "batch_id": "test-001",
+        "model_checkpoint": str(tmp_path / "nonexistent_checkpoint.pt"),
         "max_iterations": 3,
         "stagnation_limit": 2,
         "hyperparameters": {
@@ -60,6 +62,7 @@ class TestAutomationRunner:
         # Create a runner with stagnation_limit=1 and 10 max iterations
         config = {
             "batch_id": "stag-test",
+            "model_checkpoint": str(tmp_path / "nonexistent_checkpoint.pt"),
             "max_iterations": 10,
             "stagnation_limit": 1,
             "hyperparameters": {"mask_p_tail": 0.08},
@@ -141,3 +144,56 @@ class TestAutomationRunner:
         # After run, hyperparams should still be accessible
         runner.run()
         assert runner.current_hyperparams is not None
+
+    def test_loads_family_baselines(self, tmp_path):
+        """Should load per-family baselines when baselines_dir is configured."""
+        baselines_dir = tmp_path / "baselines"
+        baselines_dir.mkdir()
+
+        # Create mock baseline files
+        snare_dist = MetricDistribution(metric_name="mrstft", values=[0.2, 0.3, 0.4])
+        kick_dist = MetricDistribution(metric_name="mrstft", values=[0.1, 0.15, 0.2])
+        save_baseline(snare_dist, baselines_dir / "Snare_mrstft.json")
+        save_baseline(kick_dist, baselines_dir / "Kick_mrstft.json")
+
+        config = {
+            "batch_id": "baseline-test",
+            "model_checkpoint": str(tmp_path / "nonexistent.pt"),
+            "max_iterations": 1,
+            "stagnation_limit": 1,
+            "hyperparameters": {},
+            "guardrails": {"rollback_thresholds": {}},
+            "baselines_dir": str(baselines_dir),
+            "reports_dir": str(tmp_path / "reports"),
+            "outputs_dir": str(tmp_path / "outputs"),
+            "dry_run": True,
+        }
+        config_path = tmp_path / "batch_bl.json"
+        with open(config_path, "w") as f:
+            json.dump(config, f)
+
+        runner = AutomationRunner(config_path)
+        assert "Snare" in runner._family_baselines
+        assert "Kick" in runner._family_baselines
+        assert "mrstft" in runner._family_baselines["Snare"]
+
+    def test_no_baselines_dir_is_ok(self, tmp_path):
+        """Should work fine without baselines directory."""
+        config = {
+            "batch_id": "no-bl-test",
+            "model_checkpoint": str(tmp_path / "nonexistent.pt"),
+            "max_iterations": 1,
+            "stagnation_limit": 1,
+            "hyperparameters": {},
+            "guardrails": {"rollback_thresholds": {}},
+            "baselines_dir": str(tmp_path / "nonexistent_baselines"),
+            "reports_dir": str(tmp_path / "reports"),
+            "outputs_dir": str(tmp_path / "outputs"),
+            "dry_run": True,
+        }
+        config_path = tmp_path / "batch_nobl.json"
+        with open(config_path, "w") as f:
+            json.dump(config, f)
+
+        runner = AutomationRunner(config_path)
+        assert runner._family_baselines == {}
