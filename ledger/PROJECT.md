@@ -4,6 +4,7 @@
 
 ## Status
 
+**Lane:** personal
 **Phase:** Pre-development — vision and research complete, implementation not yet started
 **Last updated:** 2026-04-07
 
