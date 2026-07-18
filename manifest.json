@@ -1,0 +1,23 @@
+{
+  "capture_finished_at_utc": "2026-07-18T00:48:21Z",
+  "capture_started_at_utc": "2026-07-18T00:48:16Z",
+  "captured_at_utc": "2026-07-18T00:48:16Z",
+  "captured_byte_estimate": 277305765,
+  "captured_path_count": 993,
+  "consistency_retry_count": 0,
+  "excluded": [],
+  "github_hard_limit_bytes": 100000000,
+  "guardian_version": "2.0-sidecar",
+  "head_state": "symbolic",
+  "host": "aidans-mac-mini",
+  "racy_capture": false,
+  "repository_id": "VariationSampler-0eea094a9f68",
+  "schema_version": 1,
+  "snapshot_blob_threshold_bytes": 94371840,
+  "snapshot_consistency": "stable",
+  "source_branch": "main",
+  "source_head_oid": "001b5d41b7de7fa1f71339a4de909d78f92ec350",
+  "source_index_sha256": "b2289a0a73185d08d7d7f4cfe47346223749b04cbd75c0f3cae389219274c1dd",
+  "source_path": "/Users/aidanobrien/Dev/VariationSampler",
+  "upstream_observed": "origin/main"
+}
