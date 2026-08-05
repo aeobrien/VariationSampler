@@ -1,0 +1,214 @@
+project_shape:
+  scale: multi-subsystem
+  has_subsystem_layer: true
+  expected_modules: "12-16"
+  kind: tool/pipeline
+
+modules:
+  - id: variationsampler.data-pipeline.sample-ingest
+    project: VariationSampler
+    subsystem: Data Pipeline
+    name: Training sample ingest
+    capability: Imports rendered drum hits, parses AD2/Reaper naming metadata, groups round-robin sets, flags duplicates, and writes manifests.
+    status: working
+    approach: Uses filename regex parsing, per-set metadata dataclasses, attack-window correlation for duplicate checks, and CSV manifest export.
+    tech: [python, numpy, csv, regex]
+    io: {in: "WAV files from capture passes", out: "Round-robin set metadata, duplicate flags, CSV manifests, duration stats"}
+    code_refs: [src/data/import_samples.py, scripts/import_training_data.py, tests/test_import_samples.py]
+    known_gaps: ["Importer is tailored to the AD2/Reaper filename convention rather than a generic commercial-library schema.", "Training data preparation is still called out as an open question in ledger/PROJECT.md."]
+    match_keywords: [audio dataset import, sample manifest, drum round robin parsing, duplicate detection, metadata extraction]
+
+  - id: variationsampler.data-pipeline.preprocessing-alignment
+    project: VariationSampler
+    subsystem: Data Pipeline
+    name: Sample preprocessing and alignment
+    capability: Trims silence, aligns transients to a reference, normalizes loudness, and pads or truncates one-shots to a fixed model length.
+    status: working
+    approach: Uses librosa onset strength and onset backtracking for coarse alignment, short-window cross-correlation for fine alignment, then RMS normalization and fixed-length padding.
+    tech: [python, numpy, librosa]
+    io: {in: "Raw or lightly processed drum hit audio", out: "Aligned normalized fixed-length audio arrays"}
+    code_refs: [src/data/preprocessing.py, src/data/alignment.py, tests/test_preprocessing.py, tests/test_alignment.py]
+    known_gaps: []
+    match_keywords: [audio preprocessing, onset alignment, transient alignment, silence trimming, loudness normalization]
+
+  - id: variationsampler.data-pipeline.dac-codegram-cache
+    project: VariationSampler
+    subsystem: Data Pipeline
+    name: DAC codegram cache
+    capability: Encodes processed audio into DAC token codegrams, decodes them back to audio, and caches codegrams on disk for reuse.
+    status: partial
+    approach: Wraps the pretrained DAC 44.1 kHz model with numpy and torch helpers for encode, decode, save, and cache-hit reuse.
+    tech: [torch, descript-audio-codec, audiotools, numpy]
+    io: {in: "Processed audio arrays or cached .npy paths", out: "DAC codegrams and reconstructed audio"}
+    code_refs: [src/data/codegram_cache.py, scripts/generate.py, tests/test_codegram_cache.py]
+    known_gaps: ["Multi-channel inputs are mixed to mono during encoding; src/data/codegram_cache.py contains a TODO for real stereo support."]
+    match_keywords: [audio tokenization, DAC codec, codegram cache, neural codec decode, latent audio representation]
+
+  - id: variationsampler.data-pipeline.splits-and-pairs
+    project: VariationSampler
+    subsystem: Data Pipeline
+    name: Split and pair generation
+    capability: Builds leakage-safe train, dev, and test manifests and expands round-robin groups into ordered training pairs consumable by the model dataset.
+    status: working
+    approach: Uses group-key-isolated manifest generation, held-out library splits, pair cartesian products, and a PyTorch Dataset that pads codegrams to model length.
+    tech: [python, json, numpy, torch]
+    io: {in: "Group-key to file-list mappings and cached codegram paths", out: "Split manifests, ordered training pairs, dataset samples"}
+    code_refs: [src/data/splits.py, src/data/dataset.py, scripts/train.py, tests/test_splits.py, tests/test_dataset.py]
+    known_gaps: ["scripts/train.py still contains compatibility logic for older split files with absolute paths and missing codegram references."]
+    match_keywords: [dataset splits, leakage prevention, training pair generation, pytorch dataset, manifest management]
+
+  - id: variationsampler.model-and-inference.masked-token-transformer
+    project: VariationSampler
+    subsystem: Model & Inference
+    name: Masked-token transformer
+    capability: Predicts replacement tokens for editable DAC codebooks using bidirectional context from the full input codegram.
+    status: working
+    approach: Sums per-codebook embeddings, adds learned mask and positional embeddings, runs a TransformerEncoder, and emits per-editable-codebook logits.
+    tech: [torch]
+    io: {in: "Masked input codegrams and boolean mask tensors", out: "Per-codebook token logits"}
+    code_refs: [src/model/model.py, tests/test_model.py]
+    known_gaps: []
+    match_keywords: [masked token transformer, audio token inpainting, bidirectional transformer, codebook embeddings, micro inpainting]
+
+  - id: variationsampler.model-and-inference.training-loop
+    project: VariationSampler
+    subsystem: Model & Inference
+    name: Model training loop
+    capability: Trains and evaluates the transformer on same-set codegram pairs with masked-token cross-entropy and checkpoint management.
+    status: working
+    approach: Uses torch DataLoaders, stochastic masking, masked cross-entropy, a change-rate penalty, optimizer stepping, and checkpoint save and load helpers.
+    tech: [torch]
+    io: {in: "Codegram pair batches, config, optimizer state", out: "Updated model weights, metric summaries, checkpoint files"}
+    code_refs: [src/model/train.py, scripts/train.py, tests/test_train.py]
+    known_gaps: []
+    match_keywords: [model training, masked language modeling, checkpointing, pytorch training loop, audio token prediction]
+
+  - id: variationsampler.model-and-inference.variation-sampling
+    project: VariationSampler
+    subsystem: Model & Inference
+    name: Variation sampling and rendering
+    capability: Builds inference masks, samples replacement tokens, applies them to codegrams, and post-processes decoded audio variations for listening.
+    status: partial
+    approach: Uses Bernoulli mask schedules, temperature and top-p sampling, token replacement, decode-through-DAC workflows, and a lightweight postprocess chain.
+    tech: [torch, numpy, descript-audio-codec]
+    io: {in: "Source codegrams or WAVs plus inference config", out: "Generated candidate codegrams and rendered variation WAVs"}
+    code_refs: [src/model/masking.py, src/model/sampling.py, src/model/inference.py, src/postprocess/chain.py, scripts/generate.py]
+    known_gaps: ["The attack-protecting buffer-zone masking strategy exists separately in scripts/strategy_comparison.py and is not part of the default generator.", "STATUS.md says the buffer-zone strategy was never tested with the current epoch-10 checkpoint at 8x mask rates."]
+    match_keywords: [stochastic sampling, nucleus sampling, masked generation, audio variation synthesis, inference pipeline]
+
+  - id: variationsampler.evaluation-and-metrics.perceptual-metrics
+    project: VariationSampler
+    subsystem: Evaluation & Metrics
+    name: Perceptual metric suite
+    capability: Measures similarity, variation magnitude, transient preservation, high-frequency loss, and spectral artifacts between source and generated hits.
+    status: working
+    approach: Implements multi-resolution STFT, MFCC, token-delta, attack-energy, transient-correlation, high-frequency FFT, spectral-peak, and inter-variation statistics directly in numpy and scipy-style routines.
+    tech: [numpy, librosa, scipy]
+    io: {in: "Mono audio pairs or codegram pairs", out: "Scalar distance and artifact metrics"}
+    code_refs: [src/eval/metrics.py, tests/test_metrics.py]
+    known_gaps: []
+    match_keywords: [audio metrics, perceptual distance, MR-STFT, MFCC distance, transient preservation, artifact detection]
+
+  - id: variationsampler.evaluation-and-metrics.acceptance-filter
+    project: VariationSampler
+    subsystem: Evaluation & Metrics
+    name: Candidate acceptance filter
+    capability: Scores each generated candidate against threshold bands and returns accept or reject decisions with rejection reasons.
+    status: partial
+    approach: Evaluates the full metric bundle against config-defined bands and minimums, then sorts accepted candidates by a simple composite quality score.
+    tech: [numpy]
+    io: {in: "Source audio and codegram plus generated candidates and thresholds", out: "Acceptance decisions, metric bundles, ranked accepted candidates"}
+    code_refs: [src/eval/acceptance.py, tests/test_acceptance.py]
+    known_gaps: ["STATUS.md reports that the acceptance filter rejects nearly everything on most families because attack preservation is poor.", "Threshold calibration remains an open question in ledger/PROJECT.md."]
+    match_keywords: [candidate filtering, quality gate, thresholded evaluation, audio acceptance criteria, ranking]
+
+  - id: variationsampler.evaluation-and-metrics.baseline-calibration
+    project: VariationSampler
+    subsystem: Evaluation & Metrics
+    name: Ground-truth baseline calibration
+    capability: Computes family-level distance distributions from real round-robin pairs and persists them for later comparison.
+    status: working
+    approach: Aggregates pairwise MR-STFT or MFCC distances across real round-robin sets, summarizes their distributions, and stores JSON baselines.
+    tech: [numpy, json]
+    io: {in: "Real round-robin audio pairs grouped by family", out: "Per-metric baseline distributions and in-band comparisons"}
+    code_refs: [src/eval/baselines.py, scripts/compute_baselines.py, tests/test_baselines.py]
+    known_gaps: []
+    match_keywords: [baseline metrics, calibration, reference distribution, round robin analysis, metric bands]
+
+  - id: variationsampler.evaluation-and-metrics.machine-gun-proxy
+    project: VariationSampler
+    subsystem: Evaluation & Metrics
+    name: Machine-gun proxy evaluation
+    capability: Renders repeated-hit sequences and scores how much perceptual repetition remains across a set of generated or real hits.
+    status: working
+    approach: Builds 16th-note hit sequences, extracts attack features, and primarily uses pairwise log-spectral distance with a legacy cosine-similarity fallback.
+    tech: [numpy, librosa]
+    io: {in: "Lists of hit waveforms", out: "Rendered machine-gun audio and repetition metrics"}
+    code_refs: [src/eval/machine_gun_proxy.py, scripts/gate_a_eval.py, scripts/gate_b_eval.py, tests/test_machine_gun.py]
+    known_gaps: ["The feature-based self-similarity metric is explicitly marked as less reliable than the spectral-distance metric in src/eval/machine_gun_proxy.py."]
+    match_keywords: [machine gun effect, repeated hit evaluation, spectral diversity, drum repetition metric, listening proxy]
+
+  - id: variationsampler.evaluation-and-metrics.attack-mitigation-bench
+    project: VariationSampler
+    subsystem: Evaluation & Metrics
+    name: Attack-mitigation strategy bench
+    capability: Compares alternative masking and candidate-selection strategies for attack preservation on problematic instrument families.
+    status: partial
+    approach: Uses a script-level experiment harness to generate large candidate pools, apply buffer-zone masking or stricter selectors, and render comparison packs.
+    tech: [torch, numpy, descript-audio-codec]
+    io: {in: "Checkpoint, config, cached codegrams, target family list", out: "Strategy comparison metrics, manifests, and machine-gun WAV packs"}
+    code_refs: [scripts/strategy_comparison.py, tests/test_strategy_comparison.py]
+    known_gaps: ["STATUS.md says the buffer-zone masking strategy was proposed and coded but not yet tested with the active epoch-10 checkpoint.", "The strategy comparison logic lives in a standalone script rather than the core inference path."]
+    match_keywords: [ablation study, masking strategy comparison, attack preservation, candidate selection, experiment harness]
+
+  - id: variationsampler.automation-and-orchestration.batch-evaluation-pipeline
+    project: VariationSampler
+    subsystem: Automation & Orchestration
+    name: Batch evaluation pipeline
+    capability: Loads a trained checkpoint once, evaluates multiple dev samples end to end, and records per-sample metrics plus rendered outputs.
+    status: working
+    approach: Combines codegram loading, checkpoint restore, candidate generation, DAC decoding, stereo reconstruction, postprocessing, acceptance scoring, and aggregate metrics in one pipeline object.
+    tech: [torch, numpy, descript-audio-codec]
+    io: {in: "Checkpoint path, config, split manifest, codegrams, processed WAVs", out: "Per-sample metrics and output audio directories"}
+    code_refs: [src/automation/evaluation.py, tests/test_evaluation.py]
+    known_gaps: ["Missing codegrams or audio files are silently skipped during dev-sample selection."]
+    match_keywords: [evaluation pipeline, batch inference, model benchmarking, audio render pipeline, dev-set evaluation]
+
+  - id: variationsampler.automation-and-orchestration.llm-tuning-advisor
+    project: VariationSampler
+    subsystem: Automation & Orchestration
+    name: LLM tuning advisor
+    capability: Packages iteration metrics for Claude, parses proposed config deltas, and validates that suggested hyperparameter changes stay within policy.
+    status: partial
+    approach: Builds constrained prompts, calls the Anthropic API, extracts JSON config patches, and checks them against allowlists and step-size limits.
+    tech: [anthropic, json, regex]
+    io: {in: "Iteration reports and automation policy", out: "Validated config updates plus logged model reasoning"}
+    code_refs: [src/automation/claude_loop.py, tests/test_claude_loop.py]
+    known_gaps: ["Requires external Anthropic credentials and package availability at runtime.", "Only allowed flat parameter deltas are supported; invalid or non-JSON responses are rejected."]
+    match_keywords: [llm control loop, hyperparameter advisor, prompt-driven tuning, config validation, anthropic integration]
+
+  - id: variationsampler.automation-and-orchestration.automation-runner
+    project: VariationSampler
+    subsystem: Automation & Orchestration
+    name: Tuning loop orchestrator
+    capability: Runs repeated evaluation-report-recommend-apply cycles over inference hyperparameters and manages rollback and stopping decisions for a batch.
+    status: partial
+    approach: Uses a batch JSON config, lazy pipeline initialization, report generation, optional Claude recommendations, regression checks, and stagnation-based stopping.
+    tech: [python, json, numpy]
+    io: {in: "Batch config, checkpoint, base config, baselines", out: "Iteration history, updated hyperparameters, batch summary"}
+    code_refs: [src/automation/runner.py, scripts/run_automation.py, tests/test_runner.py]
+    known_gaps: ["The runner explicitly tunes inference-time parameters only and does not retrain the model.", "If the checkpoint is missing, the evaluation step returns empty results instead of failing hard."]
+    match_keywords: [automation loop, hyperparameter search, rollback guardrails, batch orchestration, tuning workflow]
+
+  - id: variationsampler.automation-and-orchestration.reporting-and-listening-pack
+    project: VariationSampler
+    subsystem: Automation & Orchestration
+    name: Reporting and listening-pack assembly
+    capability: Summarizes iteration and batch results, renders markdown and JSON reports, and assembles listening-ready machine-gun packs from generated outputs.
+    status: working
+    approach: Aggregates metric trajectories, config diffs, per-family summaries, git metadata, and audio copies into structured reports and listening directories.
+    tech: [json, numpy, git, shutil]
+    io: {in: "Iteration reports, output audio paths, optional listening notes", out: "JSON reports, markdown summaries, listening-pack directories, rendered machine-gun WAVs"}
+    code_refs: [src/automation/report.py, src/automation/batch_summary.py, tests/test_report.py, tests/test_batch_summary.py]
+    known_gaps: []
+    match_keywords: [experiment reporting, evaluation summary, listening pack, markdown report, result aggregation]
