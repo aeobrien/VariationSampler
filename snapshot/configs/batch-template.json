@@ -1,0 +1,63 @@
+{
+  "batch_id": "batch-001",
+  "model_checkpoint": "checkpoints/best.pt",
+  "max_iterations": 10,
+  "stagnation_limit": 3,
+
+  "hyperparameters": {
+    "mask_p_attack": 0.08,
+    "mask_p_tail": 0.32,
+    "editable_codebooks": [3, 4, 5, 6, 7, 8],
+    "temperature": 0.9,
+    "top_p": 0.95,
+    "k_candidates": 8,
+    "acceptance_band_low": 0.1,
+    "acceptance_band_high": 0.8,
+    "learning_rate": 0.0002,
+    "batch_size": 64,
+    "attack_frames": 2
+  },
+
+  "automation": {
+    "allowed_params": [
+      "mask_p_attack",
+      "mask_p_tail",
+      "temperature",
+      "top_p",
+      "k_candidates",
+      "learning_rate",
+      "batch_size",
+      "attack_frames",
+      "editable_codebooks",
+      "acceptance_band_low",
+      "acceptance_band_high"
+    ],
+    "step_size_limits": {
+      "mask_p_tail": 0.05,
+      "mask_p_attack": 0.02,
+      "temperature": 0.2,
+      "top_p": 0.1,
+      "learning_rate_factor": 2.0,
+      "k_candidates": 4
+    }
+  },
+
+  "guardrails": {
+    "rollback_thresholds": {
+      "mrstft_to_input_p95": 0.30,
+      "attack_smear_score_mean": 0.10,
+      "acceptance_rate_min": 0.10
+    }
+  },
+
+  "eval": {
+    "dev_samples": 50,
+    "test_samples": 0,
+    "ood_samples": 0,
+    "generate_listening_pack": true,
+    "generate_machine_gun_test": true
+  },
+
+  "reports_dir": "reports",
+  "outputs_dir": "outputs"
+}
