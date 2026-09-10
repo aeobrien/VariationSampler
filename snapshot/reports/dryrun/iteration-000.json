@@ -1,0 +1,253 @@
+{
+  "iteration_id": 0,
+  "timestamp": "2026-03-02T22:23:38.093143+00:00",
+  "config": {
+    "mask_p_attack": 0.08,
+    "mask_p_tail": 0.32,
+    "temperature": 0.9,
+    "top_p": 0.95,
+    "k_candidates": 4
+  },
+  "metrics": {
+    "mrstft": {
+      "mean": 1.0956154862200913,
+      "p5": 0.8528171734273282,
+      "p50": 1.0340967987811112,
+      "p95": 1.3814768802201403,
+      "std": 0.24371842495649051,
+      "n": 3
+    },
+    "mrstft_attack": {
+      "mean": 0.9624445946516693,
+      "p5": 0.8495470743893819,
+      "p50": 0.969673798946019,
+      "p95": 1.070281671907912,
+      "std": 0.10025764928880833,
+      "n": 3
+    },
+    "mfcc": {
+      "mean": 14.623805522918701,
+      "p5": 9.766555786132812,
+      "p50": 15.948320150375366,
+      "p95": 18.553895020484923,
+      "std": 4.0945706947108444,
+      "n": 3
+    },
+    "token_change_rate": {
+      "mean": 0.21056832694763727,
+      "p5": 0.17155172413793102,
+      "p50": 0.22844827586206895,
+      "p95": 0.23706896551724138,
+      "std": 0.032296726989532044,
+      "n": 3
+    },
+    "attack_smear": {
+      "mean": 0.9786424027915664,
+      "p5": 0.9582643504354883,
+      "p50": 0.9862279854419898,
+      "p95": 0.9937105472923484,
+      "std": 0.016949802780521286,
+      "n": 3
+    },
+    "transient_xcorr": {
+      "mean": 0.9461724658638181,
+      "p5": 0.8930704928946384,
+      "p50": 0.9589085343812038,
+      "p95": 0.9903591908708277,
+      "std": 0.04504057346970315,
+      "n": 3
+    },
+    "hf_energy_delta_db": {
+      "mean": -1.1649120435993643,
+      "p5": -3.2556081140432878,
+      "p50": -0.12491886739994662,
+      "p95": 0.19778880350496678,
+      "std": 1.7305178808114297,
+      "n": 3
+    },
+    "spectral_peak_divergence": {
+      "mean": 17.833333333333332,
+      "p5": 15.425,
+      "p50": 17.0,
+      "p95": 20.825,
+      "std": 2.5193694096384958,
+      "n": 3
+    },
+    "accepted": {
+      "mean": 1.0,
+      "p5": 1.0,
+      "p50": 1.0,
+      "p95": 1.0,
+      "std": 0.0,
+      "n": 3
+    },
+    "inter_var_mrstft_mean": {
+      "mean": 0.7504172664970953,
+      "p5": 0.6726483444150074,
+      "p50": 0.7638924842799848,
+      "p95": 0.8187535361311606,
+      "std": 0.06695611559174071,
+      "n": 3
+    }
+  },
+  "baseline_comparison": {},
+  "per_family": {
+    "Unknown": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.0956154862200913,
+          "p5": 0.8528171734273282,
+          "p50": 1.0340967987811112,
+          "p95": 1.3814768802201403,
+          "std": 0.24371842495649051,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 0.9624445946516693,
+          "p5": 0.8495470743893819,
+          "p50": 0.969673798946019,
+          "p95": 1.070281671907912,
+          "std": 0.10025764928880833,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 14.623805522918701,
+          "p5": 9.766555786132812,
+          "p50": 15.948320150375366,
+          "p95": 18.553895020484923,
+          "std": 4.0945706947108444,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.21056832694763727,
+          "p5": 0.17155172413793102,
+          "p50": 0.22844827586206895,
+          "p95": 0.23706896551724138,
+          "std": 0.032296726989532044,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9786424027915664,
+          "p5": 0.9582643504354883,
+          "p50": 0.9862279854419898,
+          "p95": 0.9937105472923484,
+          "std": 0.016949802780521286,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.9461724658638181,
+          "p5": 0.8930704928946384,
+          "p50": 0.9589085343812038,
+          "p95": 0.9903591908708277,
+          "std": 0.04504057346970315,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -1.1649120435993643,
+          "p5": -3.2556081140432878,
+          "p50": -0.12491886739994662,
+          "p95": 0.19778880350496678,
+          "std": 1.7305178808114297,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 17.833333333333332,
+          "p5": 15.425,
+          "p50": 17.0,
+          "p95": 20.825,
+          "std": 2.5193694096384958,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 1.0,
+          "p5": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.7504172664970953,
+          "p5": 0.6726483444150074,
+          "p50": 0.7638924842799848,
+          "p95": 0.8187535361311606,
+          "std": 0.06695611559174071,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {}
+    }
+  },
+  "acceptance_rate": 1.0,
+  "trends": {
+    "mrstft": "first",
+    "mrstft_attack": "first",
+    "mfcc": "first",
+    "token_change_rate": "first",
+    "attack_smear": "first",
+    "transient_xcorr": "first",
+    "hf_energy_delta_db": "first",
+    "spectral_peak_divergence": "first",
+    "accepted": "first",
+    "inter_var_mrstft_mean": "first"
+  },
+  "best_samples": [
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.341221379862178
+    },
+    {
+      "name": "pass-02_Track10_Snare_v025",
+      "score": 2.649748625051972
+    },
+    {
+      "name": "pass-02_Track10_Rimshot_v025",
+      "score": 3.3433558695491796
+    }
+  ],
+  "worst_samples": [
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.341221379862178
+    },
+    {
+      "name": "pass-02_Track10_Snare_v025",
+      "score": 2.649748625051972
+    },
+    {
+      "name": "pass-02_Track10_Rimshot_v025",
+      "score": 3.3433558695491796
+    }
+  ],
+  "audio_paths": {
+    "pass-02_Track10_Kick_v025": {
+      "source": "outputs/dryrun/iteration-000/pass-02_Track10_Kick_v025/source.wav",
+      "variations": [
+        "outputs/dryrun/iteration-000/pass-02_Track10_Kick_v025/var_01.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Kick_v025/var_02.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Kick_v025/var_03.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Kick_v025/var_04.wav"
+      ]
+    },
+    "pass-02_Track10_Rimshot_v025": {
+      "source": "outputs/dryrun/iteration-000/pass-02_Track10_Rimshot_v025/source.wav",
+      "variations": [
+        "outputs/dryrun/iteration-000/pass-02_Track10_Rimshot_v025/var_01.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Rimshot_v025/var_02.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Rimshot_v025/var_03.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Rimshot_v025/var_04.wav"
+      ]
+    },
+    "pass-02_Track10_Snare_v025": {
+      "source": "outputs/dryrun/iteration-000/pass-02_Track10_Snare_v025/source.wav",
+      "variations": [
+        "outputs/dryrun/iteration-000/pass-02_Track10_Snare_v025/var_01.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Snare_v025/var_02.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Snare_v025/var_03.wav",
+        "outputs/dryrun/iteration-000/pass-02_Track10_Snare_v025/var_04.wav"
+      ]
+    }
+  },
+  "n_samples": 3
+}
