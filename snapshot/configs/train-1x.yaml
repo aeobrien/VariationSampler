@@ -1,0 +1,76 @@
+# Training config with 1x mask rates (original pre-sweep values).
+#
+# IMPORTANT: This is the training config. For generation/inference, use
+# default.yaml which has 4x mask rates. The variation mechanism depends
+# on inference mask rates exceeding training mask rates.
+#
+# See CLAUDE.md "Critical Design Decisions" for why.
+
+model:
+  d_model: 256
+  n_layers: 4
+  n_heads: 4
+  dropout: 0.1
+  nq: 9
+  codebook_size: 1024
+  t_max: 215
+  edit_codebooks: [3, 4, 5, 6, 7, 8]
+
+masking:
+  # 1x mask rates — the original gradient from technical brief
+  codebook_multipliers:
+    3: 0.06
+    4: 0.12
+    5: 0.25
+    6: 1.0
+    7: 1.0
+    8: 1.0
+  p_tail: 0.08
+  p_attack: 0.02
+  attack_frames: 3
+
+sampling:
+  temperature: 0.9
+  top_p: 0.95
+  k_candidates: 8
+
+acceptance:
+  mrstft_band: [0.0, 0.25]
+  mfcc_band: [2.0, 15.0]
+  min_token_change_rate: 0.01
+  max_token_change_rate: 0.30
+  max_retries: 5
+  min_attack_smear: 0.85
+  min_transient_xcorr: 0.80
+  max_hf_energy_delta_db: 6.0
+  max_spectral_peak_divergence: 50
+  attack_ms: 30
+
+training:
+  learning_rate: 0.0002
+  batch_size: 64
+  max_epochs: 100
+  warmup_steps: 500
+  weight_decay: 0.01
+  grad_clip: 1.0
+  change_rate_penalty_lambda: 0.1
+  target_change_rate: 0.05
+  checkpoint_every_epochs: 1
+  eval_every_epochs: 1
+  early_stopping_patience: 5
+
+eval:
+  machine_gun_bpm: 120.0
+  machine_gun_hits: 8
+  n_mfcc: 13
+  mrstft_resolutions:
+    - [512, 88, "hann"]
+    - [1024, 220, "hann"]
+    - [2048, 441, "hann"]
+
+data:
+  sample_rate: 44100
+  max_audio_length_s: 2.5
+  trim_threshold_db: -60.0
+  normalize_target_db: -18.0
+  normalize_tolerance_db: 1.0
