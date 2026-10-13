@@ -1,0 +1,960 @@
+{
+  "iteration_id": 5,
+  "timestamp": "2026-03-02T23:32:52.854263+00:00",
+  "config": {
+    "mask_p_attack": 0.08,
+    "mask_p_tail": 0.24,
+    "temperature": 0.65,
+    "top_p": 0.9,
+    "k_candidates": 16
+  },
+  "metrics": {
+    "mrstft": {
+      "mean": 1.3998848816077254,
+      "p5": 0.929633413300118,
+      "p50": 1.4096001165980243,
+      "p95": 1.9316564350838614,
+      "std": 0.3426402913756499,
+      "n": 15
+    },
+    "mrstft_attack": {
+      "mean": 1.1698802414475733,
+      "p5": 0.7795034095225799,
+      "p50": 1.118610108393689,
+      "p95": 1.462885123145047,
+      "std": 0.24594370413729633,
+      "n": 15
+    },
+    "mfcc": {
+      "mean": 24.464264386892317,
+      "p5": 8.159973260760307,
+      "p50": 21.654956340789795,
+      "p95": 42.89013094902038,
+      "std": 11.95254707089974,
+      "n": 15
+    },
+    "token_change_rate": {
+      "mean": 0.13611111111111113,
+      "p5": 0.07344348659003833,
+      "p50": 0.12751436781609193,
+      "p95": 0.18480603448275862,
+      "std": 0.03873336893805403,
+      "n": 15
+    },
+    "attack_smear": {
+      "mean": 0.9596047113598059,
+      "p5": 0.8686268854543255,
+      "p50": 0.9728851156193219,
+      "p95": 1.0011499599168616,
+      "std": 0.04751787672105468,
+      "n": 15
+    },
+    "transient_xcorr": {
+      "mean": 0.7039441958351361,
+      "p5": 0.2338892863709389,
+      "p50": 0.8639928603146187,
+      "p95": 0.9946054484331027,
+      "std": 0.27309015321367097,
+      "n": 15
+    },
+    "hf_energy_delta_db": {
+      "mean": -0.7104330350438098,
+      "p5": -4.0138578566219705,
+      "p50": 0.09218525389106524,
+      "p95": 1.8556263587274007,
+      "std": 2.116022789700557,
+      "n": 15
+    },
+    "spectral_peak_divergence": {
+      "mean": 20.345833333333335,
+      "p5": 8.35,
+      "p50": 18.375,
+      "p95": 38.43749999999999,
+      "std": 9.983837633339641,
+      "n": 15
+    },
+    "accepted": {
+      "mean": 0.525,
+      "p5": 0.0,
+      "p50": 0.9375,
+      "p95": 1.0,
+      "std": 0.49149008128343746,
+      "n": 15
+    },
+    "inter_var_mrstft_mean": {
+      "mean": 0.7352557112170799,
+      "p5": 0.5473307349198366,
+      "p50": 0.7422912079748883,
+      "p95": 0.955587635934365,
+      "std": 0.13797854258467726,
+      "n": 15
+    }
+  },
+  "baseline_comparison": {},
+  "per_family": {
+    "CrossStick": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.6194017467668484,
+          "p5": 1.5584071532302537,
+          "p50": 1.6149433860324138,
+          "p95": 1.6835171928175479,
+          "std": 0.056838561122292415,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.3793540849472539,
+          "p5": 1.2846578566120603,
+          "p50": 1.4347983762648475,
+          "p95": 1.4352393093601319,
+          "std": 0.07875675247059845,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 35.22217504183451,
+          "p5": 27.37513072490692,
+          "p50": 33.8600218296051,
+          "p95": 44.02272660732269,
+          "std": 7.612681911468125,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.14028575989782885,
+          "p5": 0.12719109195402298,
+          "p50": 0.12751436781609193,
+          "p95": 0.16232040229885059,
+          "std": 0.018316052420459628,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9560120468769239,
+          "p5": 0.9367773843919351,
+          "p50": 0.9610731726479618,
+          "p95": 0.9717039213221859,
+          "std": 0.01624217074787322,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.5995457065216648,
+          "p5": 0.5538469693834777,
+          "p50": 0.5838455739423523,
+          "p95": 0.6562345364653708,
+          "std": 0.04775235048845814,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": 0.06074547360086724,
+          "p5": -2.4364604100491114,
+          "p50": -1.2078379675832962,
+          "p95": 3.4459597660797594,
+          "std": 2.8150636727347575,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 19.0,
+          "p5": 13.06875,
+          "p50": 19.3125,
+          "p95": 24.7125,
+          "std": 5.286332613447625,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.0,
+          "p5": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.834898477365598,
+          "p5": 0.7561584574755914,
+          "p50": 0.8303428790273645,
+          "p95": 0.9168274160923678,
+          "std": 0.07295207459206692,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.6194017467668484,
+          "baseline_median": 1.0228707364965257,
+          "baseline_q25": 0.7359596071669302,
+          "baseline_q75": 1.285048414546514,
+          "in_band": false
+        },
+        "mfcc": {
+          "value": 35.22217504183451,
+          "baseline_median": 15.40071153640747,
+          "baseline_q25": 10.344220399856567,
+          "baseline_q75": 20.49686622619629,
+          "in_band": false
+        }
+      }
+    },
+    "HiHat": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.8943324685786684,
+          "p5": 1.8304508011923508,
+          "p50": 1.9313249548319467,
+          "p95": 1.9323193955876912,
+          "std": 0.05309849830736359,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.4110245936323558,
+          "p5": 1.368048887832945,
+          "p50": 1.3946670112285364,
+          "p95": 1.46545060711444,
+          "std": 0.04567124253700792,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 33.84808631738027,
+          "p5": 28.82270327806473,
+          "p50": 33.026652097702026,
+          "p95": 39.44847331047058,
+          "std": 4.854819026949035,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.08133780332056194,
+          "p5": 0.05462164750957854,
+          "p50": 0.0828544061302682,
+          "p95": 0.10699233716475097,
+          "std": 0.023780020399947976,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9877407586252094,
+          "p5": 0.9765001268303661,
+          "p50": 0.9940013085940262,
+          "p95": 0.9945990054418806,
+          "std": 0.00932729089855684,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.2887050587381326,
+          "p5": 0.2314155489106094,
+          "p50": 0.23512615510110363,
+          "p95": 0.38349980111157617,
+          "std": 0.07870533958759071,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": 0.4901446652928246,
+          "p5": 0.14060044845538028,
+          "p50": 0.4069865169311351,
+          "p95": 0.8978995859834515,
+          "std": 0.3485142209647845,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 37.083333333333336,
+          "p5": 32.83125,
+          "p50": 36.9375,
+          "p95": 41.4375,
+          "std": 3.905235979496701,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.0,
+          "p5": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.725694030463294,
+          "p5": 0.6116937300731375,
+          "p50": 0.7368476541391522,
+          "p95": 0.8318867942803495,
+          "std": 0.10019249538118108,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.8943324685786684,
+          "baseline_median": 1.0165823105063236,
+          "baseline_q25": 0.5478869626912823,
+          "baseline_q75": 1.3379820487874183,
+          "in_band": false
+        },
+        "mfcc": {
+          "value": 33.84808631738027,
+          "baseline_median": 13.554606437683105,
+          "baseline_q25": 6.720201373100281,
+          "baseline_q75": 21.59438133239746,
+          "in_band": false
+        }
+      }
+    },
+    "Kick": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 0.9821564771482221,
+          "p5": 0.8341511901316503,
+          "p50": 0.9773745248843517,
+          "p95": 1.133509130749503,
+          "std": 0.13583361250056517,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 0.7950076138264238,
+          "p5": 0.778873167561323,
+          "p50": 0.7798185305032084,
+          "p95": 0.8217744184177751,
+          "std": 0.02222749186544071,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 8.275245716174444,
+          "p5": 7.76190917789936,
+          "p50": 8.35900530219078,
+          "p95": 8.72995054423809,
+          "std": 0.4430887101932645,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.15138090676883784,
+          "p5": 0.11521791187739464,
+          "p50": 0.16187739463601533,
+          "p95": 0.1801963601532567,
+          "std": 0.03039495520118656,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9953731619288364,
+          "p5": 0.9908526033985083,
+          "p50": 0.9949751552021345,
+          "p95": 1.0001723251678556,
+          "std": 0.004236869053977422,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.9937702401540894,
+          "p5": 0.991509986418431,
+          "p50": 0.993958987155152,
+          "p95": 0.9958983709890041,
+          "std": 0.0019950808298208706,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -0.8602283067704931,
+          "p5": -3.1517975620123884,
+          "p50": 0.2576962631006511,
+          "p95": 0.6487937495616014,
+          "std": 1.896574766337694,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 13.3125,
+          "p5": 5.75625,
+          "p50": 17.0625,
+          "p95": 18.24375,
+          "std": 6.254373469820938,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 1.0,
+          "p5": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.547902867391412,
+          "p5": 0.46152884119711673,
+          "p50": 0.5902316817811966,
+          "p95": 0.6046467235128579,
+          "std": 0.0714871834619672,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 0.9821564771482221,
+          "baseline_median": 0.6489233133911949,
+          "baseline_q25": 0.45484000910492633,
+          "baseline_q75": 0.9150742357763886,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 8.275245716174444,
+          "baseline_median": 5.13384485244751,
+          "baseline_q25": 2.726722002029419,
+          "baseline_q75": 9.327661037445068,
+          "in_band": true
+        }
+      }
+    },
+    "Rimshot": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.3366137446763122,
+          "p5": 1.25095182237597,
+          "p50": 1.361581479139814,
+          "p95": 1.4047982528522032,
+          "std": 0.0719847326596879,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.1058919524202058,
+          "p5": 1.0972157861699756,
+          "p50": 1.102429234762825,
+          "p95": 1.1169920210306026,
+          "std": 0.009298835829711133,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 18.787089268366497,
+          "p5": 18.05603973865509,
+          "p50": 19.214069962501526,
+          "p95": 19.21925231218338,
+          "std": 0.6079180720675088,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.12436143039591317,
+          "p5": 0.11738505747126438,
+          "p50": 0.1221264367816092,
+          "p95": 0.13290229885057472,
+          "std": 0.007213999698400394,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9331626661176076,
+          "p5": 0.8937227149109612,
+          "p50": 0.9383351781403745,
+          "p95": 0.9689818589083173,
+          "std": 0.03433361235393978,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.8732884718836518,
+          "p5": 0.8641189058245322,
+          "p50": 0.8652533154137529,
+          "p95": 0.8880826474717005,
+          "std": 0.012265502500337542,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -1.19419927027331,
+          "p5": -2.1472890399158864,
+          "p50": -2.0408581032376634,
+          "p95": 0.35155168244431356,
+          "std": 1.281885885806428,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 13.5625,
+          "p5": 10.0375,
+          "p50": 10.375,
+          "p95": 19.318749999999998,
+          "std": 4.775425373723267,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.9791666666666666,
+          "p5": 0.94375,
+          "p50": 1.0,
+          "p95": 1.0,
+          "std": 0.02946278254943948,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.7176646825845064,
+          "p5": 0.6969394476301823,
+          "p50": 0.7000584573550354,
+          "p95": 0.7507142751994601,
+          "std": 0.027386058209610892,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.3366137446763122,
+          "baseline_median": 1.0260546652493543,
+          "baseline_q25": 0.7599960319310691,
+          "baseline_q75": 1.2693353587480871,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 18.787089268366497,
+          "baseline_median": 16.730643272399902,
+          "baseline_q25": 10.906525373458862,
+          "baseline_q75": 22.691822052001953,
+          "in_band": true
+        }
+      }
+    },
+    "Snare": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.166919970868575,
+          "p5": 1.0202204467260327,
+          "p50": 1.068305208571415,
+          "p95": 1.3826498286191289,
+          "std": 0.17857834456816946,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.1581229624116272,
+          "p5": 0.9676651704077058,
+          "p50": 1.0583666797134192,
+          "p95": 1.4184101523042938,
+          "std": 0.21628776766880056,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 26.18872559070587,
+          "p5": 15.656878983974456,
+          "p50": 21.654956340789795,
+          "p95": 39.89421067237854,
+          "std": 11.452146383091602,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.1831896551724138,
+          "p5": 0.17834051724137934,
+          "p50": 0.1831896551724138,
+          "p95": 0.18803879310344826,
+          "std": 0.00439922726792955,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9257349232504533,
+          "p5": 0.8348210230331155,
+          "p50": 0.9534849322962777,
+          "p95": 0.9972238171357142,
+          "std": 0.07623593525724323,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.764411501878142,
+          "p5": 0.45754071012201414,
+          "p50": 0.9248635751715129,
+          "p95": 0.95896584232891,
+          "std": 0.2541779260899582,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -2.0486277370689376,
+          "p5": -4.736918073573658,
+          "p50": -1.0966794312680417,
+          "p95": -0.02670121462484555,
+          "std": 2.2401233803760654,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 18.770833333333332,
+          "p5": 16.1375,
+          "p50": 16.25,
+          "p95": 23.16875,
+          "std": 3.6537414233753442,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.6458333333333334,
+          "p5": 0.09375,
+          "p50": 0.9375,
+          "p95": 0.99375,
+          "std": 0.4573853833354197,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.8501184982805893,
+          "p5": 0.7465078926758701,
+          "p50": 0.7844580549847068,
+          "p95": 0.999691414192426,
+          "std": 0.12387629859217844,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.166919970868575,
+          "baseline_median": 0.9338704871479666,
+          "baseline_q25": 0.680593523048549,
+          "baseline_q75": 1.2095770802196255,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 26.18872559070587,
+          "baseline_median": 13.218132495880127,
+          "baseline_q25": 8.746132612228394,
+          "baseline_q75": 17.972250938415527,
+          "in_band": false
+        }
+      }
+    }
+  },
+  "acceptance_rate": 0.525,
+  "trends": {
+    "mrstft": "stable",
+    "mrstft_attack": "stable",
+    "mfcc": "stable",
+    "token_change_rate": "stable",
+    "attack_smear": "stable",
+    "transient_xcorr": "stable",
+    "hf_energy_delta_db": "stable",
+    "spectral_peak_divergence": "stable",
+    "accepted": "stable",
+    "inter_var_mrstft_mean": "stable"
+  },
+  "best_samples": [
+    {
+      "name": "pass-02_Track11_Kick_v025",
+      "score": 1.8623058789324454
+    },
+    {
+      "name": "pass-02_Track12_Kick_v025",
+      "score": 2.0297073276925954
+    },
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.283792522702435
+    }
+  ],
+  "worst_samples": [
+    {
+      "name": "pass-02_Track12_HiHatClosed_v076",
+      "score": 6.016461875238004
+    },
+    {
+      "name": "pass-02_Track11_CrossStick_v051",
+      "score": 6.407634435320021
+    },
+    {
+      "name": "pass-02_Track11_SnareRim_v025",
+      "score": 6.466554629629355
+    }
+  ],
+  "audio_paths": {
+    "pass-02_Track11_CrossStick_v051": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_CrossStick_v051/var_16.wav"
+      ]
+    },
+    "pass-02_Track14_CrossStick_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track14_CrossStick_v102": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track14_CrossStick_v102/var_16.wav"
+      ]
+    },
+    "pass-02_Track11_HiHatClosed_v102": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_HiHatClosed_v102/var_16.wav"
+      ]
+    },
+    "pass-02_Track12_HiHatClosed_v076": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_HiHatClosed_v076/var_16.wav"
+      ]
+    },
+    "pass-02_Track13_HiHatClosed_v051": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_HiHatClosed_v051/var_16.wav"
+      ]
+    },
+    "pass-02_Track10_Kick_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Kick_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track11_Kick_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Kick_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track12_Kick_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track12_Kick_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track10_Rimshot_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Rimshot_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track13_Rimshot_v076": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v076/var_16.wav"
+      ]
+    },
+    "pass-02_Track13_Rimshot_v127": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track13_Rimshot_v127/var_16.wav"
+      ]
+    },
+    "pass-02_Track10_Snare_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track10_Snare_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track11_SnareRim_v025": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_SnareRim_v025/var_16.wav"
+      ]
+    },
+    "pass-02_Track11_Snare_v127": {
+      "source": "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/source.wav",
+      "variations": [
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_01.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_02.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_03.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_04.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_05.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_06.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_07.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_08.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_09.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_10.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_11.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_12.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_13.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_14.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_15.wav",
+        "outputs/phase4-001/iteration-005/pass-02_Track11_Snare_v127/var_16.wav"
+      ]
+    }
+  },
+  "n_samples": 15
+}
