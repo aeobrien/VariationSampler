@@ -1,0 +1,137 @@
+{
+  "batch_id": "dryrun-001",
+  "start_time": "2026-03-02T22:23:38.093143+00:00",
+  "end_time": "2026-03-02T22:23:47.003409+00:00",
+  "n_iterations": 2,
+  "stop_reason": "iteration_cap",
+  "git_commit": "f32a03191f9fc80c6f1bfabc8a5817bbcf6818d3",
+  "config_trajectory": [
+    {
+      "iteration": 1,
+      "changes": []
+    }
+  ],
+  "metric_trajectory": {
+    "accepted": {
+      "values": [
+        1.0,
+        1.0
+      ],
+      "trend": "\u2192"
+    },
+    "attack_smear": {
+      "values": [
+        0.9786424027915664,
+        0.9941534809868563
+      ],
+      "trend": "\u2192"
+    },
+    "hf_energy_delta_db": {
+      "values": [
+        -1.1649120435993643,
+        -1.0049932884193788
+      ],
+      "trend": "\u2191"
+    },
+    "inter_var_mrstft_mean": {
+      "values": [
+        0.7504172664970953,
+        0.7848767253695842
+      ],
+      "trend": "\u2192"
+    },
+    "mfcc": {
+      "values": [
+        14.623805522918701,
+        14.82552981376648
+      ],
+      "trend": "\u2192"
+    },
+    "mrstft": {
+      "values": [
+        1.0956154862200913,
+        1.1068182871059478
+      ],
+      "trend": "\u2192"
+    },
+    "mrstft_attack": {
+      "values": [
+        0.9624445946516693,
+        0.9740117988616501
+      ],
+      "trend": "\u2192"
+    },
+    "spectral_peak_divergence": {
+      "values": [
+        17.833333333333332,
+        19.75
+      ],
+      "trend": "\u2191"
+    },
+    "token_change_rate": {
+      "values": [
+        0.21056832694763727,
+        0.22078544061302682
+      ],
+      "trend": "\u2192"
+    },
+    "transient_xcorr": {
+      "values": [
+        0.9461724658638181,
+        0.9376785086708637
+      ],
+      "trend": "\u2192"
+    }
+  },
+  "best_samples": [
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.341221379862178,
+      "iteration": 0
+    },
+    {
+      "name": "pass-02_Track10_Snare_v025",
+      "score": 2.649748625051972,
+      "iteration": 0
+    },
+    {
+      "name": "pass-02_Track10_Rimshot_v025",
+      "score": 3.3433558695491796,
+      "iteration": 0
+    }
+  ],
+  "worst_samples": [
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.341221379862178,
+      "iteration": 0
+    },
+    {
+      "name": "pass-02_Track10_Snare_v025",
+      "score": 2.649748625051972,
+      "iteration": 0
+    },
+    {
+      "name": "pass-02_Track10_Rimshot_v025",
+      "score": 3.3433558695491796,
+      "iteration": 0
+    }
+  ],
+  "claude_diagnoses": [],
+  "recommended_actions": [],
+  "listening_notes": null,
+  "starting_config": {
+    "mask_p_attack": 0.08,
+    "mask_p_tail": 0.32,
+    "temperature": 0.9,
+    "top_p": 0.95,
+    "k_candidates": 4
+  },
+  "final_config": {
+    "mask_p_attack": 0.08,
+    "mask_p_tail": 0.32,
+    "temperature": 0.9,
+    "top_p": 0.95,
+    "k_candidates": 4
+  }
+}
