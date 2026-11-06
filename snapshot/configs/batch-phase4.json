@@ -1,0 +1,50 @@
+{
+  "batch_id": "phase4-003",
+  "model_checkpoint": "checkpoints/best.pt",
+  "base_config": "configs/default.yaml",
+  "max_iterations": 8,
+  "stagnation_limit": 4,
+  "dry_run": false,
+
+  "hyperparameters": {
+    "mask_p_attack": 0.02,
+    "mask_p_tail": 0.24,
+    "temperature": 0.65,
+    "top_p": 0.9,
+    "k_candidates": 16
+  },
+
+  "automation": {
+    "allowed_params": [
+      "mask_p_attack", "mask_p_tail", "temperature", "top_p", "k_candidates"
+    ],
+    "step_size_limits": {
+      "mask_p_tail": 0.05,
+      "mask_p_attack": 0.02,
+      "temperature": 0.2,
+      "top_p": 0.1,
+      "k_candidates": 4
+    }
+  },
+
+  "guardrails": {
+    "rollback_thresholds": {
+      "mrstft_p95": 2.5,
+      "attack_smear_min": 0.70,
+      "acceptance_rate_min": 0.05
+    }
+  },
+
+  "eval": {
+    "samples_per_family": 3,
+    "generate_listening_pack": true,
+    "generate_machine_gun_test": true
+  },
+
+  "baselines_dir": "data/baselines",
+  "splits_dir": "data/splits",
+  "codegrams_dir": "data/codegrams/pass-02",
+  "processed_dir": "data/processed/pass-02",
+  "reports_dir": "reports/phase4-003",
+  "outputs_dir": "outputs/phase4-003"
+}

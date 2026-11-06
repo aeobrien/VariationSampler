@@ -1,0 +1,804 @@
+{
+  "batch_id": "phase4-003",
+  "start_time": "2026-03-03T08:36:49.571626+00:00",
+  "end_time": "2026-03-03T09:03:04.459828+00:00",
+  "n_iterations": 6,
+  "stop_reason": "stagnation",
+  "git_commit": "f32a03191f9fc80c6f1bfabc8a5817bbcf6818d3",
+  "config_trajectory": [
+    {
+      "iteration": 1,
+      "changes": [
+        {
+          "key": "k_candidates",
+          "old": 16,
+          "new": 20
+        },
+        {
+          "key": "mask_p_tail",
+          "old": 0.24,
+          "new": 0.22
+        },
+        {
+          "key": "temperature",
+          "old": 0.65,
+          "new": 0.55
+        },
+        {
+          "key": "top_p",
+          "old": 0.9,
+          "new": 0.85
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "changes": []
+    },
+    {
+      "iteration": 3,
+      "changes": [
+        {
+          "key": "k_candidates",
+          "old": 20,
+          "new": 24
+        },
+        {
+          "key": "mask_p_tail",
+          "old": 0.22,
+          "new": 0.18
+        },
+        {
+          "key": "temperature",
+          "old": 0.55,
+          "new": 0.45
+        },
+        {
+          "key": "top_p",
+          "old": 0.85,
+          "new": 0.8
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "changes": []
+    },
+    {
+      "iteration": 5,
+      "changes": [
+        {
+          "key": "k_candidates",
+          "old": 24,
+          "new": 28
+        },
+        {
+          "key": "mask_p_attack",
+          "old": 0.02,
+          "new": 0.0
+        },
+        {
+          "key": "temperature",
+          "old": 0.45,
+          "new": 0.35
+        },
+        {
+          "key": "top_p",
+          "old": 0.8,
+          "new": 0.75
+        }
+      ]
+    }
+  ],
+  "metric_trajectory": {
+    "accepted": {
+      "values": [
+        0.42083333333333334,
+        0.4033333333333333,
+        0.4,
+        0.4027777777777778,
+        0.4166666666666667,
+        0.4023809523809524
+      ],
+      "trend": "\u2192"
+    },
+    "attack_smear": {
+      "values": [
+        0.9112143630198948,
+        0.9068168709604013,
+        0.9097347626651626,
+        0.9075624452826505,
+        0.9098304630592222,
+        0.9089945082147527
+      ],
+      "trend": "\u2192"
+    },
+    "hf_energy_delta_db": {
+      "values": [
+        -1.0281876903691898,
+        -1.0082755807239705,
+        -1.030288352410995,
+        -1.0529512052626062,
+        -1.034513336096535,
+        -1.0551128146274285
+      ],
+      "trend": "\u2192"
+    },
+    "inter_var_mrstft_mean": {
+      "values": [
+        0.6875447242651401,
+        0.6623492547747074,
+        0.6613613916713101,
+        0.6095625517758823,
+        0.6090061920254082,
+        0.5891631664256238
+      ],
+      "trend": "\u2193"
+    },
+    "mfcc": {
+      "values": [
+        22.79729695916176,
+        22.445695465405784,
+        22.218071382840474,
+        21.576463207933635,
+        21.80288233757019,
+        21.618420237586616
+      ],
+      "trend": "\u2192"
+    },
+    "mrstft": {
+      "values": [
+        1.3672661474725698,
+        1.3645494080867546,
+        1.3633527112622852,
+        1.3565498630465398,
+        1.3570942340816983,
+        1.3552580389967723
+      ],
+      "trend": "\u2192"
+    },
+    "mrstft_attack": {
+      "values": [
+        1.1435855012258338,
+        1.1429835301233453,
+        1.1415408295008571,
+        1.1371897970488711,
+        1.1382405921342682,
+        1.134452166288085
+      ],
+      "trend": "\u2192"
+    },
+    "spectral_peak_divergence": {
+      "values": [
+        18.5375,
+        18.60666666666667,
+        18.24666666666667,
+        18.48888888888889,
+        18.369444444444447,
+        18.314285714285713
+      ],
+      "trend": "\u2192"
+    },
+    "token_change_rate": {
+      "values": [
+        0.13255108556832698,
+        0.12102809706257979,
+        0.1213346104725415,
+        0.09830246913580247,
+        0.09759472115793955,
+        0.097495894909688
+      ],
+      "trend": "\u2193"
+    },
+    "transient_xcorr": {
+      "values": [
+        0.7185855727864563,
+        0.7170571679000809,
+        0.7176170759412636,
+        0.7190635745391171,
+        0.7190306847244942,
+        0.7219080619807968
+      ],
+      "trend": "\u2192"
+    }
+  },
+  "per_family": {
+    "CrossStick": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.5529702491347106,
+          "p5": 1.5166587817242225,
+          "p50": 1.5518752416569015,
+          "p95": 1.5900482217796656,
+          "std": 0.033299129309902246,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.3266556222885704,
+          "p5": 1.2417090972013785,
+          "p50": 1.364645341386918,
+          "p95": 1.3850093440069184,
+          "std": 0.07033427287777916,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 32.886083966209775,
+          "p5": 24.043027005876816,
+          "p50": 33.94484772000994,
+          "p95": 40.98800629888262,
+          "std": 7.722772513143446,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.10153256704980841,
+          "p5": 0.09155719759168034,
+          "p50": 0.09229611384783798,
+          "p95": 0.11797345374931581,
+          "std": 0.013646981562462095,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.8964066391819091,
+          "p5": 0.840395278032516,
+          "p50": 0.9243470166444429,
+          "p95": 0.9328597361075287,
+          "std": 0.046362969495375474,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.6326816632461658,
+          "p5": 0.5903355494702929,
+          "p50": 0.6289365592057875,
+          "p95": 0.6776493498503037,
+          "std": 0.03969477798679134,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -0.4008373473102615,
+          "p5": -2.837084084281664,
+          "p50": -1.8041837145277377,
+          "p95": 3.0177518467133737,
+          "std": 2.8351373948961043,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 16.952380952380953,
+          "p5": 9.875,
+          "p50": 18.714285714285715,
+          "p95": 22.79642857142857,
+          "std": 5.992223796867573,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.0,
+          "p5": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.6378285156418414,
+          "p5": 0.5579377386699521,
+          "p50": 0.6014165479257848,
+          "p95": 0.7432076700149703,
+          "std": 0.08789574555998159,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.5529702491347106,
+          "baseline_median": 1.0228707364965257,
+          "baseline_q25": 0.7359596071669302,
+          "baseline_q75": 1.285048414546514,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 32.886083966209775,
+          "baseline_median": 15.40071153640747,
+          "baseline_q25": 10.344220399856567,
+          "baseline_q75": 20.49686622619629,
+          "in_band": false
+        }
+      }
+    },
+    "HiHat": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.864418843244418,
+          "p5": 1.8069362654957317,
+          "p50": 1.8777917141963432,
+          "p95": 1.9125404113267563,
+          "std": 0.04882740547389627,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.387299715367338,
+          "p5": 1.3454274844593357,
+          "p50": 1.3659345792852664,
+          "p95": 1.4441275415327905,
+          "std": 0.047251452898668375,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 30.186062358674548,
+          "p5": 25.919408525739396,
+          "p50": 31.518784386771067,
+          "p95": 33.51981077194214,
+          "std": 3.5740881007465823,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.05496259806604634,
+          "p5": 0.038238916256157635,
+          "p50": 0.05295566502463055,
+          "p95": 0.0730911330049261,
+          "std": 0.01587285203555187,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9445401851407182,
+          "p5": 0.9138452738956546,
+          "p50": 0.952932073819242,
+          "p95": 0.9693607743108152,
+          "std": 0.02587203635891869,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.30853715590259734,
+          "p5": 0.2405981077316676,
+          "p50": 0.2535675452334895,
+          "p95": 0.41495493154190255,
+          "std": 0.08812511119588892,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": 0.32288924621386766,
+          "p5": 0.017118775602762832,
+          "p50": 0.07194282032743768,
+          "p95": 0.8043222149454734,
+          "std": 0.3987419359374906,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 35.107142857142854,
+          "p5": 31.21785714285714,
+          "p50": 31.571428571428573,
+          "p95": 41.47142857142857,
+          "std": 5.2804832545289395,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.0,
+          "p5": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.5476076916831455,
+          "p5": 0.4144273404887349,
+          "p50": 0.5894701141394693,
+          "p95": 0.6514843471581294,
+          "std": 0.11153115794597179,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.864418843244418,
+          "baseline_median": 1.0165823105063236,
+          "baseline_q25": 0.5478869626912823,
+          "baseline_q75": 1.3379820487874183,
+          "in_band": false
+        },
+        "mfcc": {
+          "value": 30.186062358674548,
+          "baseline_median": 13.554606437683105,
+          "baseline_q25": 6.720201373100281,
+          "baseline_q75": 21.59438133239746,
+          "in_band": false
+        }
+      }
+    },
+    "Kick": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 0.960472961891104,
+          "p5": 0.8131517347963426,
+          "p50": 0.9528626114340026,
+          "p95": 1.1131214343058364,
+          "std": 0.13617538919780967,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 0.7749038957371875,
+          "p5": 0.7543418921436504,
+          "p50": 0.7646541080119771,
+          "p95": 0.8026407507383718,
+          "std": 0.02307650116029686,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 7.299506380444481,
+          "p5": 6.819749433653695,
+          "p50": 7.449676735060556,
+          "p95": 7.674144079004015,
+          "std": 0.40184488875313296,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.10835157817916437,
+          "p5": 0.08149288451012589,
+          "p50": 0.11295840175150518,
+          "p95": 0.1319854953475643,
+          "std": 0.02313440426110024,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.9767007980776815,
+          "p5": 0.9711765583829152,
+          "p50": 0.9763844494109067,
+          "p95": 0.9824464818391901,
+          "std": 0.005117032812616077,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.9954540145344289,
+          "p5": 0.994518353546425,
+          "p50": 0.9949120117657075,
+          "p95": 0.996769077460538,
+          "std": 0.0010905138999537703,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -1.1161578733230895,
+          "p5": -3.2990851121312565,
+          "p50": -0.14781056571700293,
+          "p95": 0.38892625016081656,
+          "std": 1.807621628348888,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 12.642857142857144,
+          "p5": 6.0964285714285715,
+          "p50": 16.285714285714285,
+          "p95": 16.639285714285712,
+          "std": 5.431938179043681,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 1.0,
+          "p5": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "std": 0.0,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.4642362892376095,
+          "p5": 0.3866965024347456,
+          "p50": 0.4962825644675998,
+          "p95": 0.5193436833794804,
+          "std": 0.06429548003612442,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 0.960472961891104,
+          "baseline_median": 0.6489233133911949,
+          "baseline_q25": 0.45484000910492633,
+          "baseline_q75": 0.9150742357763886,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 7.299506380444481,
+          "baseline_median": 5.13384485244751,
+          "baseline_q25": 2.726722002029419,
+          "baseline_q75": 9.327661037445068,
+          "in_band": true
+        }
+      }
+    },
+    "Rimshot": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.2669667589866302,
+          "p5": 1.1838611785373887,
+          "p50": 1.2913606144551384,
+          "p95": 1.3329966406079166,
+          "std": 0.06981365893867693,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.0563545124864377,
+          "p5": 1.0432190757572861,
+          "p50": 1.0543352188967086,
+          "p95": 1.070903454728399,
+          "std": 0.012638803640395435,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 15.534314325877597,
+          "p5": 13.914440069879804,
+          "p50": 15.198792253221784,
+          "p95": 17.38905403273446,
+          "std": 1.5938732742400228,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.08807699324940704,
+          "p5": 0.07477422003284072,
+          "p50": 0.09133825944170772,
+          "p95": 0.09909688013136288,
+          "std": 0.011271407863620127,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.8412120470891299,
+          "p5": 0.7711340949337198,
+          "p50": 0.8238012496056922,
+          "p95": 0.9234775574829465,
+          "std": 0.07019249069256304,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.8993553278846157,
+          "p5": 0.8951186587900202,
+          "p50": 0.8986226928978963,
+          "p95": 0.9041048414699149,
+          "std": 0.004109003249269562,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -1.8125194042996557,
+          "p5": -2.8424757071699753,
+          "p50": -2.4955563635755573,
+          "p95": -0.30443722993620576,
+          "std": 1.248483052150133,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 10.238095238095237,
+          "p5": 6.978571428571429,
+          "p50": 8.392857142857142,
+          "p95": 14.789285714285713,
+          "std": 3.7756304755005283,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.3452380952380953,
+          "p5": 0.0035714285714285713,
+          "p50": 0.03571428571428571,
+          "p95": 0.9035714285714285,
+          "std": 0.4632161061510409,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.5648904816978125,
+          "p5": 0.5222210299576213,
+          "p50": 0.5710156408359307,
+          "p95": 0.6032723220413211,
+          "std": 0.037019846902571756,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.2669667589866302,
+          "baseline_median": 1.0260546652493543,
+          "baseline_q25": 0.7599960319310691,
+          "baseline_q75": 1.2693353587480871,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 15.534314325877597,
+          "baseline_median": 16.730643272399902,
+          "baseline_q25": 10.906525373458862,
+          "baseline_q75": 22.691822052001953,
+          "in_band": true
+        }
+      }
+    },
+    "Snare": {
+      "n_samples": 3,
+      "metrics": {
+        "mrstft": {
+          "mean": 1.131461381726998,
+          "p5": 1.004045130595615,
+          "p50": 1.0420745226462422,
+          "p95": 1.3214484342149095,
+          "std": 0.15723994328143695,
+          "n": 3
+        },
+        "mrstft_attack": {
+          "mean": 1.1270470855608934,
+          "p5": 0.9428474927146266,
+          "p50": 1.0333321685682664,
+          "p95": 1.3768471203019987,
+          "std": 0.20771989534254348,
+          "n": 3
+        },
+        "mfcc": {
+          "mean": 22.186134156726656,
+          "p5": 14.451807144709996,
+          "p50": 18.128617150442942,
+          "p95": 32.76072307314192,
+          "std": 8.786711019403603,
+          "n": 3
+        },
+        "token_change_rate": {
+          "mean": 0.13455573800401388,
+          "p5": 0.13163656267104543,
+          "p50": 0.13409961685823754,
+          "p95": 0.13779419813902571,
+          "std": 0.0028117195780737827,
+          "n": 3
+        },
+        "attack_smear": {
+          "mean": 0.8861128715843257,
+          "p5": 0.7654349148461572,
+          "p50": 0.9096532744220217,
+          "p95": 0.9903125463361069,
+          "std": 0.10335576719772649,
+          "n": 3
+        },
+        "transient_xcorr": {
+          "mean": 0.7735121483361761,
+          "p5": 0.47451787537700957,
+          "p50": 0.9291726529326505,
+          "p95": 0.9635440680778106,
+          "std": 0.24763323528044118,
+          "n": 3
+        },
+        "hf_energy_delta_db": {
+          "mean": -2.268938694418003,
+          "p5": -5.1563240744760845,
+          "p50": -1.105872202739207,
+          "p95": -0.19569985853507932,
+          "std": 2.395765774268539,
+          "n": 3
+        },
+        "spectral_peak_divergence": {
+          "mean": 16.630952380952383,
+          "p5": 13.160714285714286,
+          "p50": 15.25,
+          "p95": 21.067857142857143,
+          "std": 3.7172988388877717,
+          "n": 3
+        },
+        "accepted": {
+          "mean": 0.6666666666666666,
+          "p5": 0.1,
+          "p50": 1.0,
+          "p95": 1.0,
+          "std": 0.4714045207910317,
+          "n": 3
+        },
+        "inter_var_mrstft_mean": {
+          "mean": 0.7312528538677098,
+          "p5": 0.6551046174558113,
+          "p50": 0.6662620278112218,
+          "p95": 0.8528946685191499,
+          "std": 0.10080412948726902,
+          "n": 3
+        }
+      },
+      "baseline_comparison": {
+        "mrstft": {
+          "value": 1.131461381726998,
+          "baseline_median": 0.9338704871479666,
+          "baseline_q25": 0.680593523048549,
+          "baseline_q75": 1.2095770802196255,
+          "in_band": true
+        },
+        "mfcc": {
+          "value": 22.186134156726656,
+          "baseline_median": 13.218132495880127,
+          "baseline_q25": 8.746132612228394,
+          "baseline_q75": 17.972250938415527,
+          "in_band": true
+        }
+      }
+    }
+  },
+  "best_samples": [
+    {
+      "name": "pass-02_Track11_Kick_v025",
+      "score": 1.7025989749193917,
+      "iteration": 5
+    },
+    {
+      "name": "pass-02_Track12_Kick_v025",
+      "score": 1.9005307379727072,
+      "iteration": 5
+    },
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.1590314066106764,
+      "iteration": 3
+    },
+    {
+      "name": "pass-02_Track14_CrossStick_v102",
+      "score": 5.371304292065156,
+      "iteration": 2
+    },
+    {
+      "name": "pass-02_Track11_SnareRim_v025",
+      "score": 5.696471502223615,
+      "iteration": 3
+    }
+  ],
+  "worst_samples": [
+    {
+      "name": "pass-02_Track12_Kick_v025",
+      "score": 1.9005307379727072,
+      "iteration": 5
+    },
+    {
+      "name": "pass-02_Track10_Kick_v025",
+      "score": 2.1590314066106764,
+      "iteration": 3
+    },
+    {
+      "name": "pass-02_Track14_CrossStick_v102",
+      "score": 5.371304292065156,
+      "iteration": 2
+    },
+    {
+      "name": "pass-02_Track11_SnareRim_v025",
+      "score": 5.696471502223615,
+      "iteration": 3
+    },
+    {
+      "name": "pass-02_Track11_CrossStick_v051",
+      "score": 6.023215495720927,
+      "iteration": 1
+    }
+  ],
+  "claude_diagnoses": [
+    {
+      "iteration": 0,
+      "reasoning": "First iteration with a 42% acceptance rate \u2014 there's significant room for improvement. Key observations:\n\n1. **Transient preservation has outlier issues**: transient_xcorr mean (0.72) is much lower than p50 (0.89), indicating a subset of samples with badly damaged transients are dragging down acceptance.\n2. **mrstft at 1.37 is moderate** but combined with spectral_peak_divergence of 18.5 and MFCC of 22.8, some variations may be diverging too far.\n3. **token_change_rate is 0.13** \u2014 relatively low, so the problem isn't excessive masking but rather the *quality* of regenerated tokens in some cases.\n4. **hf_energy_delta_db mean of -1.03** suggests slight HF loss, likely from imprecise token regeneration.\n\nStrategy: Improve acceptance by increasing selection pressure (more candidates) and tightening generation quality (lower temperature, tighter nucleus). Slightly reduce mask_p_tail to keep variations closer to source and reduce chance of quality degradation. Keep mask_p_attack unchanged at 0.02 since it's already very conservative.\n\n- k_candidates 16\u219220: More candidates to select from, better chance of filtering out bad outliers\n- temperature 0.65\u21920.55: More peaked distributions reduce extreme/bad token choices\n- top_p 0.9\u21920.85: Tighter nucleus cuts low-probability tail tokens that cause artifacts\n- mask_p_tail 0.24\u21920.22: Slightly less masking to reduce regeneration errors while maintaining variation"
+    },
+    {
+      "iteration": 2,
+      "reasoning": "Acceptance rate has been hovering around 40% for three iterations with all metrics stable \u2014 the current config is not converging toward improvement. The high mrstft (1.36), spectral_peak_divergence (18.25), and mfcc distance (22.2) indicate variations are deviating too far from the source spectrally, which is likely driving rejections. Meanwhile, transient_xcorr mean (0.72) is dragged down by a long tail of poor transient preservation despite a reasonable p50 (0.88). Token change rate is only ~12%, yet spectral impact is large, suggesting the replacement tokens themselves are too adventurous. Strategy: (1) Reduce mask_p_tail from 0.22\u21920.18 to reduce overall masking and constrain deviation; (2) Lower temperature from 0.55\u21920.45 so replacement tokens are more conservative/likely; (3) Lower top_p from 0.85\u21920.80 to further restrict sampling to high-probability tokens; (4) Increase k_candidates from 20\u219224 to give the selection stage more options to find high-quality variations. This multi-pronged approach should meaningfully reduce spectral distance metrics and boost acceptance rate while still preserving enough variation (inter_var_mrstft is currently 0.66, so we have room to trade some diversity for quality)."
+    },
+    {
+      "iteration": 3,
+      "reasoning": "Acceptance rate has been flat around 40% for three iterations despite a low token change rate (~10%), indicating that the tokens being replaced are sometimes producing destructive results rather than there being too many changes. The bimodal transient_xcorr distribution (mean=0.72 vs p50=0.89) shows some samples are badly damaged while others are fine. The strategy should focus on improving the *quality* of token replacements rather than adjusting their quantity. I'll increase k_candidates to the maximum step (+4 \u2192 28) to give the candidate selection process more options to find faithful variations. I'll lower temperature from 0.45 \u2192 0.3 and tighten top_p from 0.8 \u2192 0.7 to constrain sampling toward higher-probability tokens, reducing the chance of generating destructive replacements. mask_p_tail and mask_p_attack are left unchanged since token_change_rate and inter_var_mrstft are both trending in the right direction, and attack preservation (mask_p_attack=0.02) is already aggressive."
+    },
+    {
+      "iteration": 4,
+      "reasoning": "Acceptance rate has plateaued around 40-42% for 4 iterations with all metrics stable. Key observations: (1) Transient xcorr has a bimodal distribution (mean 0.72, p50 0.89) suggesting some samples have severely degraded transients, likely driving rejections. (2) Token change rate is low (~10%) yet acceptance is still poor, meaning the changes being made are sometimes too disruptive. (3) HF energy shows slight loss (-1.03 dB mean). Strategy: Fully eliminate attack masking (0.02\u21920.0) to maximally preserve transients. Increase k_candidates (24\u219228) for better candidate selection. Reduce temperature (0.45\u21920.35) and top_p (0.8\u21920.75) to make regenerated tokens more conservative\u2014each changed token will be closer to the model's top predictions, reducing the chance of destructive edits. The tail mask stays the same so variation still comes from the tail region, but individual token replacements will be higher quality."
+    },
+    {
+      "iteration": 5,
+      "reasoning": "The system has been stuck at ~40% acceptance for 3 iterations with all metrics stable. The token_change_rate of only ~10% despite mask_p_tail=0.18 indicates the model is frequently re-predicting the original token, meaning we're not actually exploring the variation space effectively. The bimodal transient_xcorr distribution (mean=0.72, p50=0.89) suggests a subset of samples are degrading transients significantly while others are fine.\n\nStrategy: Break out of the plateau by increasing exploration on multiple axes simultaneously. (1) Raise mask_p_tail from 0.18\u21920.23 to mask more tail tokens, creating more opportunity for meaningful variation. (2) Raise temperature from 0.35\u21920.50 so when tokens ARE masked, the model is more likely to actually substitute a different token rather than re-predicting the original \u2014 this should push token_change_rate up and improve diversity. (3) Lower top_p from 0.75\u21920.70 to compensate for the higher temperature by trimming the tail of the sampling distribution, avoiding low-probability garbage tokens. (4) Increase k_candidates from 28\u219232 to give the selection process more candidates to choose from, offsetting the potentially higher per-candidate rejection rate from increased exploration."
+    }
+  ],
+  "recommended_actions": [],
+  "listening_notes": null,
+  "starting_config": {
+    "mask_p_attack": 0.02,
+    "mask_p_tail": 0.24,
+    "temperature": 0.65,
+    "top_p": 0.9,
+    "k_candidates": 16
+  },
+  "final_config": {
+    "mask_p_attack": 0.0,
+    "mask_p_tail": 0.18,
+    "temperature": 0.35,
+    "top_p": 0.75,
+    "k_candidates": 28
+  }
+}
