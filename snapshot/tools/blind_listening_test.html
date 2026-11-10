@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variation Sampler — Blind Listening Test</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #0f3460;
+    --accent: #e94560;
+    --text: #eee;
+    --text-muted: #999;
+    --border: #333;
+    --success: #4caf50;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  h2 { font-size: 1.2rem; margin: 24px 0 12px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 16px 0 8px; }
+  .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+
+  .sample-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .reference-section {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .reference-section label { font-weight: bold; font-size: 0.9rem; }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 700px) { .options-grid { grid-template-columns: 1fr; } }
+
+  .option-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+  }
+  .option-card h4 {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .option-card .strategy-label {
+    display: none;
+    font-size: 0.75rem;
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .revealed .option-card .strategy-label { display: inline-block; }
+
+  audio { width: 100%; margin: 6px 0; }
+
+  .notes-input {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .notes-input::placeholder { color: var(--text-muted); }
+
+  .ranking-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .ranking-row label { font-size: 0.85rem; min-width: 60px; }
+  .ranking-row select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+  }
+  .ranking-row .rank-error {
+    color: var(--accent);
+    font-size: 0.8rem;
+    display: none;
+  }
+
+  .overall-notes {
+    width: 100%;
+    min-height: 60px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  button:hover { opacity: 0.85; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-save { background: var(--success); color: #fff; }
+  .btn-reveal { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+  .status-msg {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--success);
+    display: none;
+  }
+  #load-error {
+    background: var(--accent);
+    color: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>Blind Listening Test</h1>
+<p class="subtitle">
+  Rank the 4 options for each sample from best (1) to worst (4).
+  Listen to the reference first, then compare the options. Add notes if anything stands out.
+</p>
+
+<div id="load-error">
+  <strong>Error:</strong> Could not load manifest.json. Make sure you are serving from the
+  strategy_comparison output directory:<br>
+  <code>cd outputs/strategy_comparison && python3 -m http.server 8080</code>
+</div>
+
+<div id="test-container"></div>
+
+<div class="controls">
+  <button class="btn-save" id="btn-save" onclick="saveResults()">Save Results</button>
+  <button class="btn-reveal" id="btn-reveal" onclick="revealLabels()" disabled>Reveal Strategy Labels</button>
+</div>
+<div class="status-msg" id="status-msg"></div>
+
+<script>
+'use strict';
+
+let manifest = null;
+let mappings = {};  // sample_name -> { "Option 1": "B", "Option 2": "A", ... }
+let saved = false;
+
+// Deterministic shuffle seeded from string hash
+function hashCode(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
+}
+
+function seededShuffle(arr, seed) {
+  const a = arr.slice();
+  let s = seed;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildMapping(sampleName) {
+  const strategies = ['A', 'B', 'C', 'D'];
+  const seed = hashCode(sampleName);
+  const shuffled = seededShuffle(strategies, seed);
+  const map = {};
+  shuffled.forEach((s, i) => { map[`Option ${i + 1}`] = s; });
+  return map;
+}
+
+function renderSample(sample, index) {
+  const map = buildMapping(sample.name);
+  mappings[sample.name] = map;
+
+  const strategyDescriptions = manifest.strategies || {};
+  const optionLabels = Object.keys(map).sort();
+
+  let html = `
+    <div class="sample-block" id="sample-${index}">
+      <h2>${sample.family} <span style="font-weight:normal;color:var(--text-muted);font-size:0.85rem">(${sample.name})</span></h2>
+
+      <div class="reference-section">
+        <label>Source (single hit)</label><br>
+        <audio controls preload="none" src="${sample.source_single || sample.source_machinegun}"></audio>
+        <label style="margin-top:8px;display:block">Source Machine-Gun (repeated hit)</label>
+        <audio controls preload="none" src="${sample.source_machinegun}"></audio>
+      </div>
+
+      <div class="options-grid">
+  `;
+
+  optionLabels.forEach(label => {
+    const stratId = map[label];
+    const wavPath = sample.strategies[stratId];
+    html += `
+      <div class="option-card">
+        <h4>
+          ${label}
+          <span class="strategy-label">Strategy ${stratId}: ${strategyDescriptions[stratId] || ''}</span>
+        </h4>
+        <audio controls preload="none" src="${wavPath}"></audio>
+        <input type="text" class="notes-input"
+               id="note-${index}-${label.replace(' ', '_')}"
+               placeholder="Notes for ${label}...">
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  // Ranking dropdowns
+  html += `<div class="ranking-row"><label><strong>Rank:</strong></label>`;
+  optionLabels.forEach(label => {
+    html += `
+      <label>${label}:</label>
+      <select id="rank-${index}-${label.replace(' ', '_')}"
+              onchange="validateRankings(${index})">
+        <option value="">--</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+      </select>
+    `;
+  });
+  html += `<span class="rank-error" id="rank-error-${index}">Duplicate rankings!</span>`;
+  html += `</div>`;
+
+  // Overall notes
+  html += `
+    <h3>Overall Notes</h3>
+    <textarea class="overall-notes" id="overall-${index}"
+              placeholder="General observations about this sample..."></textarea>
+  </div>`;
+
+  return html;
+}
+
+function validateRankings(sampleIndex) {
+  const optionLabels = ['Option_1', 'Option_2', 'Option_3', 'Option_4'];
+  const values = optionLabels
+    .map(l => document.getElementById(`rank-${sampleIndex}-${l}`).value)
+    .filter(v => v !== '');
+
+  const errEl = document.getElementById(`rank-error-${sampleIndex}`);
+  const hasDupes = values.length !== new Set(values).size;
+  errEl.style.display = hasDupes ? 'inline' : 'none';
+  return !hasDupes;
+}
+
+function collectResults() {
+  const results = [];
+
+  manifest.samples.forEach((sample, index) => {
+    const optionLabels = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+    const rankings = {};
+    const optionNotes = {};
+
+    optionLabels.forEach(label => {
+      const key = label.replace(' ', '_');
+      const rankEl = document.getElementById(`rank-${index}-${key}`);
+      const noteEl = document.getElementById(`note-${index}-${key}`);
+      rankings[label] = rankEl.value ? parseInt(rankEl.value) : null;
+      optionNotes[label] = noteEl.value || '';
+    });
+
+    const overallEl = document.getElementById(`overall-${index}`);
+
+    results.push({
+      sample: sample.name,
+      family: sample.family,
+      rankings,
+      option_notes: optionNotes,
+      overall_notes: overallEl.value || '',
+    });
+  });
+
+  return results;
+}
+
+function saveResults() {
+  // Validate all rankings
+  let valid = true;
+  manifest.samples.forEach((_, index) => {
+    if (!validateRankings(index)) valid = false;
+  });
+
+  if (!valid) {
+    showStatus('Fix duplicate rankings before saving.', true);
+    return;
+  }
+
+  const data = {
+    test_date: new Date().toISOString(),
+    mapping: mappings,
+    manifest_generated_at: manifest.generated_at || '',
+    results: collectResults(),
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dateStr = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `listening_test_results_${dateStr}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  saved = true;
+  document.getElementById('btn-reveal').disabled = false;
+  showStatus('Results saved! You may now reveal strategy labels.');
+}
+
+function revealLabels() {
+  if (!saved) return;
+  document.querySelectorAll('.sample-block').forEach(el => {
+    el.classList.add('revealed');
+  });
+  showStatus('Strategy labels revealed.');
+}
+
+function showStatus(msg, isError) {
+  const el = document.getElementById('status-msg');
+  el.textContent = msg;
+  el.style.color = isError ? 'var(--accent)' : 'var(--success)';
+  el.style.display = 'block';
+}
+
+// Load manifest and build UI
+async function init() {
+  try {
+    const resp = await fetch('manifest.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    manifest = await resp.json();
+  } catch (err) {
+    document.getElementById('load-error').style.display = 'block';
+    console.error('Failed to load manifest:', err);
+    return;
+  }
+
+  const container = document.getElementById('test-container');
+  let html = '';
+  manifest.samples.forEach((sample, index) => {
+    html += renderSample(sample, index);
+  });
+  container.innerHTML = html;
+}
+
+init();
+</script>
+</body>
+</html>
