@@ -1,0 +1,43 @@
+{
+  "batch_id": "dryrun-001",
+  "model_checkpoint": "checkpoints/best.pt",
+  "base_config": "configs/default.yaml",
+  "max_iterations": 2,
+  "stagnation_limit": 3,
+  "dry_run": true,
+
+  "hyperparameters": {
+    "mask_p_attack": 0.08,
+    "mask_p_tail": 0.32,
+    "temperature": 0.9,
+    "top_p": 0.95,
+    "k_candidates": 4
+  },
+
+  "automation": {
+    "allowed_params": [
+      "mask_p_attack", "mask_p_tail", "temperature", "top_p", "k_candidates"
+    ],
+    "step_size_limits": {
+      "mask_p_tail": 0.05,
+      "mask_p_attack": 0.02,
+      "temperature": 0.2,
+      "top_p": 0.1,
+      "k_candidates": 4
+    }
+  },
+
+  "guardrails": {
+    "rollback_thresholds": {}
+  },
+
+  "eval": {
+    "dev_samples": 3
+  },
+
+  "splits_dir": "data/splits",
+  "codegrams_dir": "data/codegrams/pass-02",
+  "processed_dir": "data/processed/pass-02",
+  "reports_dir": "reports/dryrun",
+  "outputs_dir": "outputs/dryrun"
+}
